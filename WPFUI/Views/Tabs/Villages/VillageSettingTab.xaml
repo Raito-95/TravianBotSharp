@@ -20,13 +20,13 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <Button x:Name="SaveButton" Grid.Column="0" ToolTip="Save">
+            <Button x:Name="SaveButton" Grid.Column="0" ToolTip="儲存">
                 <materialDesign:PackIcon Width="{DynamicResource IconSize}" Height="{DynamicResource IconSize}" Kind="ContentSave" />
             </Button>
-            <Button x:Name="ImportButton" Grid.Column="1" Style="{DynamicResource MaterialDesignRaisedDarkButton}"  Width="{DynamicResource ButtonWidth}" ToolTip="Import">
+            <Button x:Name="ImportButton" Grid.Column="1" Style="{DynamicResource MaterialDesignRaisedDarkButton}"  Width="{DynamicResource ButtonWidth}" ToolTip="匯入">
                 <materialDesign:PackIcon Width="{DynamicResource IconSize}" Height="{DynamicResource IconSize}" Kind="Import" />
             </Button>
-            <Button x:Name="ExportButton" Grid.Column="2" Style="{DynamicResource MaterialDesignRaisedDarkButton}"  Width="{DynamicResource ButtonWidth}" ToolTip="Export">
+            <Button x:Name="ExportButton" Grid.Column="2" Style="{DynamicResource MaterialDesignRaisedDarkButton}"  Width="{DynamicResource ButtonWidth}" ToolTip="匯出">
                 <materialDesign:PackIcon Width="{DynamicResource IconSize}" Height="{DynamicResource IconSize}" Kind="Export" />
             </Button>
         </Grid>
@@ -34,64 +34,64 @@
             <StackPanel>
                 <Border Style="{DynamicResource Box}">
                     <StackPanel>
-                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Upgrade settings" VerticalAlignment="Center" FontWeight="Bold" />
-                        <CheckBox x:Name="UseHeroResForBuilding" Content="Use hero resources when lack of resources" />
-                        <CheckBox x:Name="UseRomanQueueLogic" Content="Use Roman queue logic" />
+                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="升級設定" VerticalAlignment="Center" FontWeight="Bold" />
+                        <CheckBox x:Name="UseHeroResForBuilding" Content="資源不足時使用英雄資源" />
+                        <CheckBox x:Name="UseRomanQueueLogic" Content="使用羅馬隊列邏輯" />
                         <StackPanel Orientation="Horizontal">
-                            <CheckBox x:Name="CompleteImmediately" Content="Use complete immediately button if queue time longer than " />
+                            <CheckBox x:Name="CompleteImmediately" Content="如果隊列時間超過 " />
                             <TextBox x:Name="CompleteImmediatelyTime" Width="25" />
-                            <Label Content=" mins" />
+                            <Label Content=" 分鐘則使用立即完成按鈕" />
                         </StackPanel>
 
-                        <CheckBox x:Name="UseSpecialUpgrade" Content="Use special upgrade method (the right upgrade button)" />
+                        <CheckBox x:Name="UseSpecialUpgrade" Content="使用特殊升級方式（右側升級按鈕）" />
                     </StackPanel>
                 </Border>
                 <Border Style="{DynamicResource Box}">
                     <StackPanel>
-                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Auto refresh" VerticalAlignment="Center" FontWeight="Bold" />
-                        <CheckBox x:Name="AutoRefreshEnable" Content="Enable auto refresh" />
-                        <uc:RangeInputUc x:Name="AutoRefreshTime" Text="Refresh every" Unit="minutes" />
+                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="自動更新" VerticalAlignment="Center" FontWeight="Bold" />
+                        <CheckBox x:Name="AutoRefreshEnable" Content="啟用自動更新" />
+                        <uc:RangeInputUc x:Name="AutoRefreshTime" Text="每隔" Unit="分鐘" />
                     </StackPanel>
                 </Border>
                 <Border Style="{DynamicResource Box}">
                     <StackPanel>
-                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="NPC Crop exchange settings" VerticalAlignment="Center" FontWeight="Bold" />
-                        <CheckBox x:Name="AutoNPCEnable" Content="Enable NPC Crop exchange" />
-                        <CheckBox x:Name="AutoNPCOverflow" Content="Despite warehouse overflow" />
-                        <uc:AmountInputUc x:Name="AutoNPCGranaryPercent" Text="Granary" Unit="%" />
-                        <uc:ResourceInputUc x:Name="AutoNPCRatio" Text="Ratio" />
+                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="NPC 糧食交換設定" VerticalAlignment="Center" FontWeight="Bold" />
+                        <CheckBox x:Name="AutoNPCEnable" Content="啟用 NPC 糧食交換" />
+                        <CheckBox x:Name="AutoNPCOverflow" Content="即使倉庫溢出也執行" />
+                        <uc:AmountInputUc x:Name="AutoNPCGranaryPercent" Text="穀倉" Unit="%" />
+                        <uc:ResourceInputUc x:Name="AutoNPCRatio" Text="比率" />
                     </StackPanel>
                 </Border>
 
                 <Border Style="{DynamicResource Box}">
                     <StackPanel>
-                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Village information" VerticalAlignment="Center" FontWeight="Bold" />
-                        <uc:TribeSelectorUc x:Name="Tribes" Text="Tribe" />
+                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="村莊訊息" VerticalAlignment="Center" FontWeight="Bold" />
+                        <uc:TribeSelectorUc x:Name="Tribes" Text="部落" />
                     </StackPanel>
                 </Border>
                 <Border Style="{DynamicResource Box}">
                     <StackPanel>
-                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Feature settings" VerticalAlignment="Center" FontWeight="Bold" />
-                        <CheckBox x:Name="AutoClaimQuestEnable" Content="Enable auto claim village's quest" />
+                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="功能設定" VerticalAlignment="Center" FontWeight="Bold" />
+                        <CheckBox x:Name="AutoClaimQuestEnable" Content="啟用自動領取村莊任務獎勵" />
                     </StackPanel>
                 </Border>
                 <Border Style="{DynamicResource Box}">
                     <StackPanel>
-                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Troop training settings" VerticalAlignment="Center" FontWeight="Bold" />
-                        <CheckBox x:Name="TrainTroopEnable" Content="Enable train troop" />
-                        <uc:RangeInputUc x:Name="TrainTroopRepeatTime" Text="Next train troop execute after" Unit="mins" />
-                        <CheckBox x:Name="TrainWhenLowResource" Content="Train maximum number if low on resource" />
+                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="部隊訓練設定" VerticalAlignment="Center" FontWeight="Bold" />
+                        <CheckBox x:Name="TrainTroopEnable" Content="啟用部隊訓練" />
+                        <uc:RangeInputUc x:Name="TrainTroopRepeatTime" Text="下次訓練執行於" Unit="分鐘" />
+                        <CheckBox x:Name="TrainWhenLowResource" Content="資源不足時訓練最大數量" />
                         <StackPanel Orientation="Horizontal">
-                            <uc:TroopSelectorUc x:Name="BarrackTroop" Text="Train in barrack" />
-                            <uc:RangeInputUc x:Name="BarrackAmount" Text="for" Unit="units" Margin="10,0,0,0" />
+                            <uc:TroopSelectorUc x:Name="BarrackTroop" Text="在兵營訓練" />
+                            <uc:RangeInputUc x:Name="BarrackAmount" Text="訓練" Unit="單位" Margin="10,0,0,0" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <uc:TroopSelectorUc x:Name="StableTroop" Text="Train in stable" />
-                            <uc:RangeInputUc x:Name="StableAmount" Text="for" Unit="units" Margin="10,0,0,0" />
+                            <uc:TroopSelectorUc x:Name="StableTroop" Text="在馬廄訓練" />
+                            <uc:RangeInputUc x:Name="StableAmount" Text="訓練" Unit="單位" Margin="10,0,0,0" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <uc:TroopSelectorUc x:Name="WorkshopTroop" Text="Train in workshop" />
-                            <uc:RangeInputUc x:Name="WorkshopAmount" Text="for" Unit="units" Margin="10,0,0,0" />
+                            <uc:TroopSelectorUc x:Name="WorkshopTroop" Text="在工廠訓練" />
+                            <uc:RangeInputUc x:Name="WorkshopAmount" Text="訓練" Unit="單位" Margin="10,0,0,0" />
                         </StackPanel>
                     </StackPanel>
                 </Border>

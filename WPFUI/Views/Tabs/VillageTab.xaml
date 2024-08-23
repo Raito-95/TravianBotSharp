@@ -18,9 +18,9 @@
             <ListBox x:Name="VillagesGrid" SelectionMode="Single" ItemTemplate="{DynamicResource ListBoxColorItem}">
                 <ListBox.ContextMenu>
                     <ContextMenu>
-                        <MenuItem x:Name="LoadCurrent" Header="Reload this village's building" />
-                        <MenuItem x:Name="LoadUnload" Header="Reload village that missing building" />
-                        <MenuItem x:Name="LoadAll" Header="Reload all village" />
+                        <MenuItem x:Name="LoadCurrent" Header="重新載入當前村莊建築" />
+                        <MenuItem x:Name="LoadUnload" Header="重新載入缺少建築的村莊" />
+                        <MenuItem x:Name="LoadAll" Header="重新載入所有村莊" />
                     </ContextMenu>
                 </ListBox.ContextMenu>
             </ListBox>
@@ -28,13 +28,13 @@
 
         <Border Style="{DynamicResource Box}" Grid.Column="1">
             <TabControl Grid.Column="1" Margin="10,0,0,0">
-                <TabItem x:Name="NoVillageTab" Header="No village" IsSelected="True">
+                <TabItem x:Name="NoVillageTab" Header="無村莊" IsSelected="True">
                     <v_tab:NoVillageTab x:Name="NoVillage" />
                 </TabItem>
-                <TabItem x:Name="BuildTab" Header="Build">
+                <TabItem x:Name="BuildTab" Header="建築">
                     <v_tab:BuildTab x:Name="Build" />
                 </TabItem>
-                <TabItem x:Name="SettingsTab" Header="Settings">
+                <TabItem x:Name="SettingsTab" Header="設定">
                     <v_tab:VillageSettingTab x:Name="Settings" />
                 </TabItem>
                 <!--<TabItem x:Name="InfoTab" Header="Info">

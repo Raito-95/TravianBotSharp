@@ -10,7 +10,7 @@
     xmlns:converter="clr-namespace:WPFUI.Converter"
     x:Name="root">
     <StackPanel VerticalAlignment="Bottom">
-        <StackPanel Orientation="Horizontal" >
+        <StackPanel Orientation="Horizontal">
             <Label Content="{Binding Text, ElementName=root}" Width="NaN" />
             <ComboBox x:Name="TroopComboBox">
                 <ComboBox.ItemTemplate>
@@ -20,7 +20,7 @@
                         </DataTemplate.Resources>
                         <StackPanel Orientation="Horizontal">
                             <Image Source="{Binding Path=., Converter={StaticResource TroopItemConverter}}" />
-                            <TextBlock Text="{Binding Troop}" Margin="5,0,0,0" />
+                            <TextBlock Text="{Binding ChineseName}" Margin="5,0,0,0" />
                         </StackPanel>
                     </DataTemplate>
                 </ComboBox.ItemTemplate>

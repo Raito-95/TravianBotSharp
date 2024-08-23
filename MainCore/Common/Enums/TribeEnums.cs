@@ -11,4 +11,15 @@
         Egyptians,
         Huns,
     }
+    public enum TribeEnumsChinese
+    {
+        任何 = 0,
+        羅馬人,
+        條頓人,
+        高盧人,
+        自然界,
+        賴達族,
+        埃及人,
+        匈奴人,
+    }
 }

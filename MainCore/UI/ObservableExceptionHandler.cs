@@ -40,7 +40,7 @@ namespace MainCore.UI
                 RxApp.MainThreadScheduler.Schedule(() => { throw exception; });
             }
 
-            _dialogService.ShowMessageBox("Error", "There is something wrong. Please check logs/logs-Other.txt.");
+            _dialogService.ShowMessageBox("錯誤", "發生錯誤。請檢查 logs/logs-Other.txt。");
         }
     }
 }

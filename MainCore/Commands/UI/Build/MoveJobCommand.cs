@@ -22,7 +22,7 @@ namespace MainCore.Commands.UI.Build
             var status = _taskManager.GetStatus(accountId);
             if (status == StatusEnums.Online)
             {
-                _dialogService.ShowMessageBox("Warning", "Please pause account before modifing building queue");
+                _dialogService.ShowMessageBox("警告", "請暫停帳號後再修改建築佇列");
                 return;
             }
             if (!jobs.IsSelected) return;

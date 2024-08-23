@@ -66,14 +66,14 @@ namespace MainCore.UI.ViewModels.Tabs
         {
             if (!Villages.IsSelected)
             {
-                _dialogService.ShowMessageBox("Warning", "No village selected");
+                _dialogService.ShowMessageBox("警告", "未選擇村莊");
                 return;
             }
 
             var villageId = new VillageId(Villages.SelectedItemId);
             await _taskManager.AddOrUpdate<UpdateBuildingTask>(AccountId, villageId);
 
-            _dialogService.ShowMessageBox("Information", $"Added update task");
+            _dialogService.ShowMessageBox("資訊", "已新增更新任務");
         }
 
         private async Task LoadUnloadHandler()
@@ -83,7 +83,7 @@ namespace MainCore.UI.ViewModels.Tabs
             {
                 await _taskManager.AddOrUpdate<UpdateBuildingTask>(AccountId, village);
             }
-            _dialogService.ShowMessageBox("Information", $"Added update task");
+            _dialogService.ShowMessageBox("資訊", "已新增更新任務");
         }
 
         private async Task LoadAllHandler()
@@ -93,7 +93,7 @@ namespace MainCore.UI.ViewModels.Tabs
             {
                 await _taskManager.AddOrUpdate<UpdateBuildingTask>(AccountId, village);
             }
-            _dialogService.ShowMessageBox("Information", $"Added update task");
+            _dialogService.ShowMessageBox("資訊", "已新增更新任務");
         }
 
         private List<ListBoxItem> LoadVillageHandler(AccountId accountId)

@@ -60,7 +60,7 @@ namespace MainCore.UI.ViewModels.Tabs
 
             if (!result.IsValid)
             {
-                _dialogService.ShowMessageBox("Error", result.ToString());
+                _dialogService.ShowMessageBox("錯誤", result.ToString());
                 return;
             }
 
@@ -73,7 +73,7 @@ namespace MainCore.UI.ViewModels.Tabs
 
             if (!result.IsValid)
             {
-                _dialogService.ShowMessageBox("Error", result.ToString());
+                _dialogService.ShowMessageBox("錯誤", result.ToString());
                 return;
             }
 
@@ -91,17 +91,17 @@ namespace MainCore.UI.ViewModels.Tabs
 
             if (!results.IsValid)
             {
-                _dialogService.ShowMessageBox("Error", results.ToString());
+                _dialogService.ShowMessageBox("錯誤", results.ToString());
                 return;
             }
-            await _waitingOverlayViewModel.Show("adding account");
+            await _waitingOverlayViewModel.Show("新增帳號中");
 
             var dto = AccountInput.ToDto();
             var success = Add(dto);
             if (success) await _mediator.Publish(new AccountUpdated());
 
             await _waitingOverlayViewModel.Hide();
-            _dialogService.ShowMessageBox("Information", success ? "Added account" : "Account is duplicated");
+            _dialogService.ShowMessageBox("資訊", success ? "帳號已新增" : "帳號重複");
         }
 
         private bool Add(AccountDto dto)

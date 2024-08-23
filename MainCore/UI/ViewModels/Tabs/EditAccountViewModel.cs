@@ -65,7 +65,7 @@ namespace MainCore.UI.ViewModels.Tabs
 
             if (!result.IsValid)
             {
-                _dialogService.ShowMessageBox("Error", result.ToString());
+                _dialogService.ShowMessageBox("錯誤", result.ToString());
                 return;
             }
 
@@ -78,7 +78,7 @@ namespace MainCore.UI.ViewModels.Tabs
 
             if (!result.IsValid)
             {
-                _dialogService.ShowMessageBox("Error", result.ToString());
+                _dialogService.ShowMessageBox("錯誤", result.ToString());
                 return;
             }
 
@@ -96,11 +96,11 @@ namespace MainCore.UI.ViewModels.Tabs
 
             if (!results.IsValid)
             {
-                _dialogService.ShowMessageBox("Error", results.ToString());
+                _dialogService.ShowMessageBox("錯誤", results.ToString());
                 return;
             }
 
-            await _waitingOverlayViewModel.Show("editing account");
+            await _waitingOverlayViewModel.Show("編輯帳號中");
 
             var dto = AccountInput.ToDto();
             Update(dto);
@@ -109,7 +109,7 @@ namespace MainCore.UI.ViewModels.Tabs
 
             await _waitingOverlayViewModel.Hide();
 
-            _dialogService.ShowMessageBox("Information", "Edited account");
+            _dialogService.ShowMessageBox("資訊", "帳號已編輯");
         }
 
         private AccountDto LoadAccountHandler(AccountId accountId)

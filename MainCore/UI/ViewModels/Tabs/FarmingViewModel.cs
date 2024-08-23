@@ -34,9 +34,9 @@ namespace MainCore.UI.ViewModels.Tabs
 
         private static readonly Dictionary<Color, string> _activeTexts = new()
         {
-            { Color.Green , "Deactive" },
-            { Color.Red , "Active" },
-            { Color.Black , "No farmlist selected" },
+            { Color.Green , "停用" },
+            { Color.Red , "啟用" },
+            { Color.Black , "未選擇羊單列表" },
         };
 
         public FarmingViewModel(IMediator mediator, IDialogService dialogService, ITaskManager taskManager, IDbContextFactory<AppDbContext> contextFactory, IValidator<FarmListSettingInput> farmListSettingInputValidator)
@@ -90,7 +90,7 @@ namespace MainCore.UI.ViewModels.Tabs
         private async Task UpdateFarmListHandler()
         {
             await _taskManager.AddOrUpdate<UpdateFarmListTask>(AccountId);
-            _dialogService.ShowMessageBox("Information", "Added update farm list task");
+            _dialogService.ShowMessageBox("資訊", "已新增更新羊單列表任務");
         }
 
         private async Task StartHandler()
@@ -101,12 +101,12 @@ namespace MainCore.UI.ViewModels.Tabs
                 var count = CountActive(AccountId);
                 if (count == 0)
                 {
-                    _dialogService.ShowMessageBox("Information", "There is no active farm or use start all button is disable");
+                    _dialogService.ShowMessageBox("資訊", "沒有啟用的羊單或已停用啟動全部按鈕");
                     return;
                 }
             }
             await _taskManager.AddOrUpdate<StartFarmListTask>(AccountId);
-            _dialogService.ShowMessageBox("Information", "Added start farm list task");
+            _dialogService.ShowMessageBox("資訊", "已新增啟動羊單列表任務");
         }
 
         private async Task StopHandler()
@@ -115,7 +115,7 @@ namespace MainCore.UI.ViewModels.Tabs
 
             if (task is not null) await _taskManager.Remove(AccountId, task);
 
-            _dialogService.ShowMessageBox("Information", "Removed start farm list task");
+            _dialogService.ShowMessageBox("資訊", "已移除啟動羊單列表任務");
         }
 
         private async Task SaveHandler()
@@ -123,7 +123,7 @@ namespace MainCore.UI.ViewModels.Tabs
             var result = await _farmListSettingInputValidator.ValidateAsync(FarmListSettingInput);
             if (!result.IsValid)
             {
-                _dialogService.ShowMessageBox("Error", result.ToString());
+                _dialogService.ShowMessageBox("錯誤", result.ToString());
                 return;
             }
 
@@ -131,7 +131,7 @@ namespace MainCore.UI.ViewModels.Tabs
             new SetSettingCommand().Execute(AccountId, settings);
             await _mediator.Publish(new AccountSettingUpdated(AccountId));
 
-            _dialogService.ShowMessageBox("Information", "Settings saved");
+            _dialogService.ShowMessageBox("資訊", "設定已儲存");
         }
 
         private async Task ActiveFarmListHandler()
@@ -139,7 +139,7 @@ namespace MainCore.UI.ViewModels.Tabs
             var selectedFarmList = FarmLists.SelectedItem;
             if (selectedFarmList is null)
             {
-                _dialogService.ShowMessageBox("Warning", "No farm list selected");
+                _dialogService.ShowMessageBox("警告", "未選擇羊單列表");
                 return;
             }
 
@@ -179,7 +179,7 @@ namespace MainCore.UI.ViewModels.Tabs
             return items;
         }
 
-        private string _activeText = "No farmlist selected";
+        private string _activeText = "未選擇羊單列表";
 
         public string ActiveText
         {

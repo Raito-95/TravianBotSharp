@@ -11,9 +11,9 @@
     x:Name="root">
     <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom">
         <Label Content="{Binding Text, ElementName=root}" Width="NaN" VerticalAlignment="Bottom" Margin="0,0,10,0" />
-        <TextBox x:Name="MinValue" materialDesign:HintAssist.Hint="Min" Style="{DynamicResource MaterialDesignFloatingHintTextBox}" Width="50" />
+        <TextBox x:Name="MinValue" materialDesign:HintAssist.Hint="最小值" Style="{DynamicResource MaterialDesignFloatingHintTextBox}" Width="50" />
         <Label Content="~" VerticalAlignment="Bottom" />
-        <TextBox x:Name="MaxValue" materialDesign:HintAssist.Hint="Max" Style="{DynamicResource MaterialDesignFloatingHintTextBox}" Width="50" />
+        <TextBox x:Name="MaxValue" materialDesign:HintAssist.Hint="最大值" Style="{DynamicResource MaterialDesignFloatingHintTextBox}" Width="50" />
         <Label Content="{Binding Unit, ElementName=root}" Width="NaN" VerticalAlignment="Bottom" />
     </StackPanel>
 </v:RangeInputUcBase>

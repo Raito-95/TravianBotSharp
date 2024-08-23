@@ -52,14 +52,14 @@ namespace MainCore.UI.ViewModels.Tabs
             var result = await _accountsettingInputValidator.ValidateAsync(AccountSettingInput);
             if (!result.IsValid)
             {
-                _dialogService.ShowMessageBox("Error", result.ToString());
+                _dialogService.ShowMessageBox("錯誤", result.ToString());
                 return;
             }
 
             var settings = AccountSettingInput.Get();
             new SetSettingCommand().Execute(AccountId, settings);
             await _mediator.Publish(new AccountSettingUpdated(AccountId));
-            _dialogService.ShowMessageBox("Information", message: "Settings saved");
+            _dialogService.ShowMessageBox("資訊", message: "設定已儲存");
         }
 
         private async Task ImportHandler()
@@ -73,7 +73,7 @@ namespace MainCore.UI.ViewModels.Tabs
             }
             catch
             {
-                _dialogService.ShowMessageBox("Warning", "Invalid file.");
+                _dialogService.ShowMessageBox("警告", "無效的檔案。");
                 return;
             }
 
@@ -81,7 +81,7 @@ namespace MainCore.UI.ViewModels.Tabs
             var result = await _accountsettingInputValidator.ValidateAsync(AccountSettingInput);
             if (!result.IsValid)
             {
-                _dialogService.ShowMessageBox("Error", result.ToString());
+                _dialogService.ShowMessageBox("錯誤", result.ToString());
                 return;
             }
 
@@ -89,7 +89,7 @@ namespace MainCore.UI.ViewModels.Tabs
             new SetSettingCommand().Execute(AccountId, settings);
             await _mediator.Publish(new AccountSettingUpdated(AccountId));
 
-            _dialogService.ShowMessageBox("Information", "Settings imported");
+            _dialogService.ShowMessageBox("資訊", "設定已匯入");
         }
 
         private async Task ExportHandler()
@@ -99,7 +99,7 @@ namespace MainCore.UI.ViewModels.Tabs
             var settings = new GetSetting().Get(AccountId);
             var jsonString = JsonSerializer.Serialize(settings);
             await File.WriteAllTextAsync(path, jsonString);
-            _dialogService.ShowMessageBox("Information", "Settings exported");
+            _dialogService.ShowMessageBox("資訊", "設定已匯出");
         }
 
         private Dictionary<AccountSettingEnums, int> LoadSettingsHandler(AccountId accountId)

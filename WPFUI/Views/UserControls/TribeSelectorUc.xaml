@@ -21,7 +21,7 @@
                         </DataTemplate.Resources>
                         <StackPanel Orientation="Horizontal">
                             <Image Source="{Binding Path=., Converter={StaticResource TribeItemConverter}}" Width="16" Height="16" />
-                            <TextBlock Text="{Binding Tribe}" Margin="5,0,0,0" />
+                            <TextBlock Text="{Binding ChineseName}" Margin="5,0,0,0" />
                         </StackPanel>
                     </DataTemplate>
                 </ComboBox.ItemTemplate>

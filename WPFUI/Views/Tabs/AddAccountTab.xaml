@@ -26,8 +26,8 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="3*" />
                 </Grid.ColumnDefinitions>
-                <TextBox x:Name="ServerTextBox"    Grid.Row="0" materialDesign:HintAssist.Hint="Server Url" Style="{DynamicResource MaterialDesignFloatingHintTextBox}" />
-                <TextBox x:Name="UsernameTextBox"  Grid.Row="1" materialDesign:HintAssist.Hint="Username" Style="{DynamicResource MaterialDesignFloatingHintTextBox}" />
+                <TextBox x:Name="ServerTextBox"    Grid.Row="0" materialDesign:HintAssist.Hint="伺服器網址" Style="{DynamicResource MaterialDesignFloatingHintTextBox}" />
+                <TextBox x:Name="UsernameTextBox"  Grid.Row="1" materialDesign:HintAssist.Hint="使用者名稱" Style="{DynamicResource MaterialDesignFloatingHintTextBox}" />
             </Grid>
         </Border>
         <Border Style="{DynamicResource Box}"  Grid.Row="1">
@@ -43,11 +43,11 @@
                     <ColumnDefinition Width="3*" />
                     <ColumnDefinition Width="5*" />
                 </Grid.ColumnDefinitions>
-                <TextBox x:Name="PasswordTextBox"       Grid.Column="0" Grid.Row="0" materialDesign:HintAssist.Hint="Password (*)" Style="{DynamicResource MaterialDesignFloatingHintTextBox}" />
-                <TextBox x:Name="ProxyHostTextBox"      Grid.Column="0" Grid.Row="1" materialDesign:HintAssist.Hint="Proxy's host" Style="{DynamicResource MaterialDesignFloatingHintTextBox}" />
-                <TextBox x:Name="ProxyPortTextBox"      Grid.Column="2" Grid.Row="1" materialDesign:HintAssist.Hint="Proxy's port" Style="{DynamicResource MaterialDesignFloatingHintTextBox}" />
-                <TextBox x:Name="ProxyUsernameTextBox"  Grid.Column="0" Grid.Row="2" materialDesign:HintAssist.Hint="Proxy's username" Style="{DynamicResource MaterialDesignFloatingHintTextBox}" />
-                <TextBox x:Name="ProxyPasswordTextBox"  Grid.Column="2" Grid.Row="2" materialDesign:HintAssist.Hint="Proxy's password" Style="{DynamicResource MaterialDesignFloatingHintTextBox}" />
+                <TextBox x:Name="PasswordTextBox"       Grid.Column="0" Grid.Row="0" materialDesign:HintAssist.Hint="密碼 (*)" Style="{DynamicResource MaterialDesignFloatingHintTextBox}" />
+                <TextBox x:Name="ProxyHostTextBox"      Grid.Column="0" Grid.Row="1" materialDesign:HintAssist.Hint="代理伺服器主機" Style="{DynamicResource MaterialDesignFloatingHintTextBox}" />
+                <TextBox x:Name="ProxyPortTextBox"      Grid.Column="2" Grid.Row="1" materialDesign:HintAssist.Hint="代理伺服器埠" Style="{DynamicResource MaterialDesignFloatingHintTextBox}" />
+                <TextBox x:Name="ProxyUsernameTextBox"  Grid.Column="0" Grid.Row="2" materialDesign:HintAssist.Hint="代理伺服器使用者名稱" Style="{DynamicResource MaterialDesignFloatingHintTextBox}" />
+                <TextBox x:Name="ProxyPasswordTextBox"  Grid.Column="2" Grid.Row="2" materialDesign:HintAssist.Hint="代理伺服器密碼" Style="{DynamicResource MaterialDesignFloatingHintTextBox}" />
             </Grid>
         </Border>
         <Border Grid.Row="2" Margin="10">
@@ -59,24 +59,24 @@
                     <ColumnDefinition Width="1*" />
                     <ColumnDefinition Width="4*" />
                 </Grid.ColumnDefinitions>
-                <Button  x:Name="AddAccessButton"       Grid.Column="0" Content="Add access" />
-                <Button  x:Name="EditAccessButton"      Grid.Column="2" Content="Edit access" />
-                <Button  x:Name="DeleteAccessButton"    Grid.Column="4" Content="Delete access" />
+                <Button  x:Name="AddAccessButton"       Grid.Column="0" Content="新增存取權限" />
+                <Button  x:Name="EditAccessButton"      Grid.Column="2" Content="編輯存取權限" />
+                <Button  x:Name="DeleteAccessButton"    Grid.Column="4" Content="刪除存取權限" />
             </Grid>
         </Border>
         <Border Style="{DynamicResource Box}"  Grid.Row="3">
             <DataGrid x:Name="ProxiesDataGrid" IsReadOnly="True" AutoGenerateColumns="False">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Password" Binding="{Binding Password}" />
-                    <DataGridTextColumn Header="Proxy's host" Binding="{Binding ProxyHost}" />
-                    <DataGridTextColumn Header="Proxy's port" Binding="{Binding ProxyPort}" />
-                    <DataGridTextColumn Header="Proxy's username" Binding="{Binding ProxyUsername}" />
-                    <DataGridTextColumn Header="Proxy's password" Binding="{Binding ProxyPassword}" />
+                    <DataGridTextColumn Header="密碼" Binding="{Binding Password}" />
+                    <DataGridTextColumn Header="代理伺服器主機" Binding="{Binding ProxyHost}" />
+                    <DataGridTextColumn Header="代理伺服器埠" Binding="{Binding ProxyPort}" />
+                    <DataGridTextColumn Header="代理伺服器使用者名稱" Binding="{Binding ProxyUsername}" />
+                    <DataGridTextColumn Header="代理伺服器密碼" Binding="{Binding ProxyPassword}" />
                     <!--<DataGridTextColumn Header="Status" Binding="{Binding ProxyStatus}" />-->
                 </DataGrid.Columns>
             </DataGrid>
         </Border>
 
-        <Button x:Name="AddAccountButton" Content="Add account" Grid.Row="4"  Margin="10" />
+        <Button x:Name="AddAccountButton" Content="新增帳號" Grid.Row="4"  Margin="10" />
     </Grid>
 </v:AddAccountTabBase>

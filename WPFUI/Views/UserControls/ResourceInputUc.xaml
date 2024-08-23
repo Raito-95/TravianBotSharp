@@ -17,27 +17,27 @@
                 <BitmapImage UriSource="pack://application:,,,/Resources/wood.png" />
             </Image.Source>
         </Image>
-        <TextBox x:Name="Wood" materialDesign:HintAssist.Hint="Wood" Style="{DynamicResource MaterialDesignFloatingHintTextBox}" Margin="5,0,0,0" Width="50" />
+        <TextBox x:Name="Wood" materialDesign:HintAssist.Hint="木" Style="{DynamicResource MaterialDesignFloatingHintTextBox}" Margin="5,0,0,0" Width="50" />
 
         <Image Margin="10,0,0,0">
             <Image.Source>
                 <BitmapImage UriSource="pack://application:,,,/Resources/clay.png" />
             </Image.Source>
         </Image>
-        <TextBox x:Name="Clay" materialDesign:HintAssist.Hint="Clay" Style="{DynamicResource MaterialDesignFloatingHintTextBox}" Margin="5,0,0,0" Width="50" />
+        <TextBox x:Name="Clay" materialDesign:HintAssist.Hint="磚" Style="{DynamicResource MaterialDesignFloatingHintTextBox}" Margin="5,0,0,0" Width="50" />
 
         <Image Margin="10,0,0,0">
             <Image.Source>
                 <BitmapImage UriSource="pack://application:,,,/Resources/iron.png" />
             </Image.Source>
         </Image>
-        <TextBox x:Name="Iron" materialDesign:HintAssist.Hint="Iron" Style="{DynamicResource MaterialDesignFloatingHintTextBox}" Margin="5,0,0,0" Width="50" />
+        <TextBox x:Name="Iron" materialDesign:HintAssist.Hint="鐵" Style="{DynamicResource MaterialDesignFloatingHintTextBox}" Margin="5,0,0,0" Width="50" />
 
         <Image Margin="10,0,0,0">
             <Image.Source>
                 <BitmapImage UriSource="pack://application:,,,/Resources/crop.png" />
             </Image.Source>
         </Image>
-        <TextBox x:Name="Crop" materialDesign:HintAssist.Hint="Crop" Style="{DynamicResource MaterialDesignFloatingHintTextBox}" Margin="5,0,0,0" Width="50" />
+        <TextBox x:Name="Crop" materialDesign:HintAssist.Hint="米" Style="{DynamicResource MaterialDesignFloatingHintTextBox}" Margin="5,0,0,0" Width="50" />
     </StackPanel>
 </v:ResourceInputUcBase>

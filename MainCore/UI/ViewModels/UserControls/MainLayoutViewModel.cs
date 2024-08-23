@@ -109,7 +109,7 @@ namespace MainCore.UI.ViewModels.UserControls
         {
             if (!Accounts.IsSelected)
             {
-                _dialogService.ShowMessageBox("Warning", "No account selected");
+                _dialogService.ShowMessageBox("警告", "未選擇帳號");
                 return;
             }
             var accountId = new AccountId(Accounts.SelectedItemId);
@@ -117,10 +117,10 @@ namespace MainCore.UI.ViewModels.UserControls
             var status = _taskManager.GetStatus(accountId);
             if (status != StatusEnums.Offline)
             {
-                _dialogService.ShowMessageBox("Warning", "Account should be offline");
+                _dialogService.ShowMessageBox("警告", "帳號應該是離線狀態");
                 return;
             }
-            var result = _dialogService.ShowConfirmBox("Information", $"Are you sure want to delete \n {Accounts.SelectedItem.Content}");
+            var result = _dialogService.ShowConfirmBox("資訊", $"確定要刪除 \n {Accounts.SelectedItem.Content} 嗎？");
             if (!result) return;
 
             DeleteAccountFromDatabase(accountId);
@@ -132,7 +132,7 @@ namespace MainCore.UI.ViewModels.UserControls
         {
             if (!Accounts.IsSelected)
             {
-                _dialogService.ShowMessageBox("Warning", "No account selected");
+                _dialogService.ShowMessageBox("警告", "未選擇帳號");
                 return;
             }
             var accountId = new AccountId(Accounts.SelectedItemId);
@@ -140,13 +140,13 @@ namespace MainCore.UI.ViewModels.UserControls
             var tribe = (TribeEnums)new GetSetting().ByName(accountId, AccountSettingEnums.Tribe);
             if (tribe == TribeEnums.Any)
             {
-                _dialogService.ShowMessageBox("Warning", "Choose tribe first");
+                _dialogService.ShowMessageBox("警告", "請先選擇部落");
                 return;
             }
 
             if (_taskManager.GetStatus(accountId) != StatusEnums.Offline)
             {
-                _dialogService.ShowMessageBox("Warning", "Account's browser is already opened");
+                _dialogService.ShowMessageBox("警告", "帳號的瀏覽器已經開啟");
                 return;
             }
 
@@ -157,7 +157,7 @@ namespace MainCore.UI.ViewModels.UserControls
 
             if (result.IsFailed)
             {
-                _dialogService.ShowMessageBox("Error", result.Errors.Select(x => x.Message).First());
+                _dialogService.ShowMessageBox("錯誤", result.Errors.Select(x => x.Message).First());
                 var errors = result.Errors.Select(x => x.Message).ToList();
                 logger.Error("{Errors}", string.Join(Environment.NewLine, errors));
 
@@ -165,14 +165,14 @@ namespace MainCore.UI.ViewModels.UserControls
                 return;
             }
             var access = result.Value;
-            logger.Information("Using connection {Proxy} to start chrome", access.Proxy);
+            logger.Information("使用連線 {Proxy} 開始 Chrome 瀏覽器", access.Proxy);
 
             var chromeBrowser = _chromeManager.Get(accountId);
 
             result = await new OpenBrowserCommand().Execute(chromeBrowser, accountId, access, CancellationToken.None);
             if (result.IsFailed)
             {
-                _dialogService.ShowMessageBox("Error", result.Errors.Select(x => x.Message).First());
+                _dialogService.ShowMessageBox("錯誤", result.Errors.Select(x => x.Message).First());
                 var errors = result.Errors.Select(x => x.Message).ToList();
                 logger.Error("{Errors}", string.Join(Environment.NewLine, errors));
                 await _taskManager.SetStatus(accountId, StatusEnums.Offline);
@@ -189,7 +189,7 @@ namespace MainCore.UI.ViewModels.UserControls
         {
             if (!Accounts.IsSelected)
             {
-                _dialogService.ShowMessageBox("Warning", "No account selected");
+                _dialogService.ShowMessageBox("警告", "未選擇帳號");
                 return;
             }
 
@@ -198,13 +198,13 @@ namespace MainCore.UI.ViewModels.UserControls
             switch (status)
             {
                 case StatusEnums.Offline:
-                    _dialogService.ShowMessageBox("Warning", "Account's browser is already closed");
+                    _dialogService.ShowMessageBox("警告", "帳號的瀏覽器已經關閉");
                     return;
 
                 case StatusEnums.Starting:
                 case StatusEnums.Pausing:
                 case StatusEnums.Stopping:
-                    _dialogService.ShowMessageBox("Warning", $"TBS is {status}. Please waiting");
+                    _dialogService.ShowMessageBox("警告", $"TBS 正在 {status}。請稍候");
                     return;
 
                 case StatusEnums.Online:
@@ -228,7 +228,7 @@ namespace MainCore.UI.ViewModels.UserControls
         {
             if (!Accounts.IsSelected)
             {
-                _dialogService.ShowMessageBox("Warning", "No account selected");
+                _dialogService.ShowMessageBox("警告", "未選擇帳號");
                 return StatusEnums.Offline;
             }
 
@@ -247,7 +247,7 @@ namespace MainCore.UI.ViewModels.UserControls
                 return StatusEnums.Paused;
             }
 
-            _dialogService.ShowMessageBox("Information", $"Account is {status}");
+            _dialogService.ShowMessageBox("資訊", $"帳號當前狀態為 {status}");
             return status;
         }
 
@@ -255,7 +255,7 @@ namespace MainCore.UI.ViewModels.UserControls
         {
             if (!Accounts.IsSelected)
             {
-                _dialogService.ShowMessageBox("Warning", "No account selected");
+                _dialogService.ShowMessageBox("警告", "未選擇帳號");
                 return;
             }
             var accountId = new AccountId(Accounts.SelectedItemId);
@@ -267,11 +267,11 @@ namespace MainCore.UI.ViewModels.UserControls
                 case StatusEnums.Starting:
                 case StatusEnums.Pausing:
                 case StatusEnums.Stopping:
-                    _dialogService.ShowMessageBox("Information", $"Account is {status}");
+                    _dialogService.ShowMessageBox("資訊", $"帳號當前狀態為 {status}");
                     return;
 
                 case StatusEnums.Online:
-                    _dialogService.ShowMessageBox("Information", $"Account should be paused first");
+                    _dialogService.ShowMessageBox("資訊", "帳號應該先暫停");
                     return;
 
                 case StatusEnums.Paused:
@@ -327,11 +327,11 @@ namespace MainCore.UI.ViewModels.UserControls
                     break;
 
                 case StatusEnums.Online:
-                    PauseText = "Pause";
+                    PauseText = "暫停";
                     break;
 
                 case StatusEnums.Paused:
-                    PauseText = "Resume";
+                    PauseText = "繼續";
                     break;
 
                 default:

@@ -32,48 +32,48 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <Button x:Name="AddAccountButton"   Content="Add account"       Grid.ColumnSpan="3" Grid.Row="0" Margin="0,0,0,2" />
-                <Button x:Name="AddAccountsButton"  Content="Add accounts"      Grid.ColumnSpan="3" Grid.Row="1" Margin="0,0,0,2" />
-                <Button x:Name="LoginButton"        Content="Login"             Grid.Column="0"     Grid.Row="2" Margin="0,0,0,2" />
-                <Button x:Name="LogoutButton"       Content="Logout"            Grid.Column="2"     Grid.Row="2" Margin="0,0,0,2" />
-                <Button x:Name="DeleteButton"       Content="Delete"            Grid.ColumnSpan="3" Grid.Row="3" Margin="0,0,0,2" />
-                <Button x:Name="PauseButton"        Content="Pause"             Grid.Column="0"     Grid.Row="4" Margin="0,0,0,2" />
-                <Button x:Name="RestartButton"      Content="Restart"           Grid.Column="2"     Grid.Row="4" Margin="0,0,0,2" />
+                <Button x:Name="AddAccountButton"   Content="新增帳號"       Grid.ColumnSpan="3" Grid.Row="0" Margin="0,0,0,2" />
+                <Button x:Name="AddAccountsButton"  Content="新增多個帳號"      Grid.ColumnSpan="3" Grid.Row="1" Margin="0,0,0,2" />
+                <Button x:Name="LoginButton"        Content="登入"             Grid.Column="0"     Grid.Row="2" Margin="0,0,0,2" />
+                <Button x:Name="LogoutButton"       Content="登出"            Grid.Column="2"     Grid.Row="2" Margin="0,0,0,2" />
+                <Button x:Name="DeleteButton"       Content="刪除"            Grid.ColumnSpan="3" Grid.Row="3" Margin="0,0,0,2" />
+                <Button x:Name="PauseButton"        Content="暫停"             Grid.Column="0"     Grid.Row="4" Margin="0,0,0,2" />
+                <Button x:Name="RestartButton"      Content="重啟"           Grid.Column="2"     Grid.Row="4" Margin="0,0,0,2" />
             </Grid>
             <Border Style="{DynamicResource Box}" Grid.Row="1">
                 <ListBox x:Name="AccountGrid" SelectionMode="Single" ItemTemplate="{DynamicResource ListBoxColorItem}" />
             </Border>
             <Border Style="{DynamicResource Box}" Grid.Row="2">
                 <StackPanel Orientation="Horizontal">
-                    <Label Content="Version: "></Label>
+                    <Label Content="版本: "></Label>
                     <Label x:Name="Version" Content="30.4.1975"></Label>
                 </StackPanel>
             </Border>
         </Grid>
         <Border Style="{DynamicResource Box}" Grid.Column="1" Margin="10,0,0,5">
             <TabControl>
-                <TabItem x:Name="NoAccountTab" Header="No account" IsSelected="True">
+                <TabItem x:Name="NoAccountTab" Header="無帳號" IsSelected="True">
                     <v_tab:NoAccountTab x:Name="NoAccount" />
                 </TabItem>
-                <TabItem x:Name="AddAccountTab" Header="Add account">
+                <TabItem x:Name="AddAccountTab" Header="新增帳號">
                     <v_tab:AddAccountTab x:Name="AddAccount" />
                 </TabItem>
-                <TabItem x:Name="AddAccountsTab" Header="Add accounts">
+                <TabItem x:Name="AddAccountsTab" Header="新增多個帳號">
                     <v_tab:AddAccountsTab x:Name="AddAccounts" />
                 </TabItem>
-                <TabItem x:Name="AccountSettingTab" Header="Settings">
+                <TabItem x:Name="AccountSettingTab" Header="設定">
                     <v_tab:AccountSettingTab x:Name="AccountSetting" />
                 </TabItem>
-                <TabItem x:Name="VillageTab" Header="Villages">
+                <TabItem x:Name="VillageTab" Header="村莊">
                     <v_tab:VillageTab x:Name="Village" />
                 </TabItem>
-                <TabItem x:Name="FarmingTab" Header="Farming">
+                <TabItem x:Name="FarmingTab" Header="羊單">
                     <v_tab:FarmingTab x:Name="Farming" />
                 </TabItem>
-                <TabItem x:Name="EditAccountTab" Header="Edit account">
+                <TabItem x:Name="EditAccountTab" Header="編輯帳號">
                     <v_tab:EditAccountTab x:Name="EditAccount" />
                 </TabItem>
-                <TabItem x:Name="DebugTab" Header="Debug">
+                <TabItem x:Name="DebugTab" Header="除錯">
                     <v_tab:DebugTag x:Name="Debug" />
                 </TabItem>
             </TabControl>

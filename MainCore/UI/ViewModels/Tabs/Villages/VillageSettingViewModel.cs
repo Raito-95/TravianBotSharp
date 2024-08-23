@@ -51,14 +51,14 @@ namespace MainCore.UI.ViewModels.Tabs.Villages
             var result = await _villageSettingInputValidator.ValidateAsync(VillageSettingInput);
             if (!result.IsValid)
             {
-                _dialogService.ShowMessageBox("Error", result.ToString());
+                _dialogService.ShowMessageBox("錯誤", result.ToString());
                 return;
             }
             var settings = VillageSettingInput.Get();
             new SetSettingCommand().Execute(VillageId, settings);
             await _mediator.Publish(new VillageSettingUpdated(AccountId, VillageId));
 
-            _dialogService.ShowMessageBox("Information", "Settings saved");
+            _dialogService.ShowMessageBox("資訊", "設定已儲存");
         }
 
         private async Task ImportHandler()
@@ -72,7 +72,7 @@ namespace MainCore.UI.ViewModels.Tabs.Villages
             }
             catch
             {
-                _dialogService.ShowMessageBox("Warning", "Invalid file.");
+                _dialogService.ShowMessageBox("警告", "檔案無效");
                 return;
             }
 
@@ -80,14 +80,14 @@ namespace MainCore.UI.ViewModels.Tabs.Villages
             var result = await _villageSettingInputValidator.ValidateAsync(VillageSettingInput);
             if (!result.IsValid)
             {
-                _dialogService.ShowMessageBox("Error", result.ToString());
+                _dialogService.ShowMessageBox("錯誤", result.ToString());
                 return;
             }
             settings = VillageSettingInput.Get();
             new SetSettingCommand().Execute(VillageId, settings);
             await _mediator.Publish(new VillageSettingUpdated(AccountId, VillageId));
 
-            _dialogService.ShowMessageBox("Information", "Settings imported");
+            _dialogService.ShowMessageBox("資訊", "設定已匯入");
         }
 
         private async Task ExportHandler()
@@ -97,7 +97,7 @@ namespace MainCore.UI.ViewModels.Tabs.Villages
             var settings = new GetSetting().Get(VillageId);
             var jsonString = JsonSerializer.Serialize(settings);
             await File.WriteAllTextAsync(path, jsonString);
-            _dialogService.ShowMessageBox("Information", "Settings exported");
+            _dialogService.ShowMessageBox("資訊", "設定已匯出");
         }
 
         private Dictionary<VillageSettingEnums, int> LoadSettingHandler(VillageId villageId)

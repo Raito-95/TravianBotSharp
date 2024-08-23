@@ -23,7 +23,7 @@
             <Border Style="{DynamicResource Box}" Grid.Row="0">
                 <ListBox x:Name="FarmlistGrid" SelectionMode="Single" ItemTemplate="{DynamicResource ListBoxColorItem}" />
             </Border>
-            <Button x:Name="Load" Grid.Row="1" Content="Load farmlist" ToolTip="Load farmlist" Margin="5,0,5,5" />
+            <Button x:Name="Load" Grid.Row="1" Content="載入羊單列表" ToolTip="載入羊單列表" Margin="5,0,5,5" />
         </Grid>
         <Border Style="{DynamicResource Box}" Grid.Column="1">
             <Grid>
@@ -33,20 +33,20 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <StackPanel                     Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center">
+                <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center">
                     <StackPanel Margin="0,20,0,0">
-                        <uc:RangeInputUc x:Name="FarmInterval" Text="Start farm delay" Unit="s" />
-                        <CheckBox x:Name="UseStartAllCheckbox" Content="Use Start all button (ignore active settings)" />
+                        <uc:RangeInputUc x:Name="FarmInterval" Text="開始羊單延遲" Unit="秒" />
+                        <CheckBox x:Name="UseStartAllCheckbox" Content="使用全部開始按鈕（忽略活動設定）" />
                     </StackPanel>
-                    <Button x:Name="SaveButton" ToolTip="Save"                              Margin="10">
+                    <Button x:Name="SaveButton" ToolTip="儲存" Margin="10">
                         <materialDesign:PackIcon Width="{DynamicResource IconSize}" Height="{DynamicResource IconSize}" Kind="ContentSave" />
                     </Button>
                 </StackPanel>
-                <Button x:Name="ActiveButton"   Grid.Row="1" Margin="10" />
-                <Button x:Name="StartButton"    Grid.Row="2" ToolTip="Start" Margin="10">
+                <Button x:Name="ActiveButton" Grid.Row="1" Margin="10" />
+                <Button x:Name="StartButton" Grid.Row="2" ToolTip="開始" Margin="10">
                     <materialDesign:PackIcon Width="{DynamicResource IconSize}" Height="{DynamicResource IconSize}" Kind="Play" />
                 </Button>
-                <Button x:Name="StopButton"     Grid.Row="3" ToolTip="Stop"             Margin="10">
+                <Button x:Name="StopButton" Grid.Row="3" ToolTip="停止" Margin="10">
                     <materialDesign:PackIcon Width="{DynamicResource IconSize}" Height="{DynamicResource IconSize}" Kind="Stop" />
                 </Button>
             </Grid>

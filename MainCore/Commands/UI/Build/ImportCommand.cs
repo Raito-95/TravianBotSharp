@@ -44,11 +44,11 @@ namespace MainCore.Commands.UI.Build
             }
             catch
             {
-                _dialogService.ShowMessageBox("Warning", "Invalid file.");
+                _dialogService.ShowMessageBox("警告", "無效的檔案。");
                 return;
             }
 
-            var confirm = _dialogService.ShowConfirmBox("Warning", "TBS will remove resource field build job if its position doesn't match with current village.");
+            var confirm = _dialogService.ShowConfirmBox("警告", "TBS將刪除資源田建築任務，如果其位置與當前村莊不匹配。");
             if (!confirm) return;
 
             var modifiedJobs = GetModifiedJobs(villageId, jobs);
@@ -56,7 +56,7 @@ namespace MainCore.Commands.UI.Build
 
             await _mediator.Publish(new JobUpdated(accountId, villageId));
 
-            _dialogService.ShowMessageBox("Information", "Jobs imported");
+            _dialogService.ShowMessageBox("資訊", "任務已匯入");
         }
 
         private static IEnumerable<JobDto> GetModifiedJobs(VillageId villageId, List<JobDto> jobs)

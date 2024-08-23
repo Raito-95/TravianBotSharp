@@ -61,7 +61,7 @@ namespace MainCore.UI.ViewModels.Tabs
 
         private async Task AddAccountHandler()
         {
-            await _waitingOverlayViewModel.Show("adding accounts");
+            await _waitingOverlayViewModel.Show("新增帳號中");
 
             Add(Accounts.ToList());
 
@@ -69,7 +69,7 @@ namespace MainCore.UI.ViewModels.Tabs
 
             await _waitingOverlayViewModel.Hide();
 
-            _dialogService.ShowMessageBox("Information", "Added accounts");
+            _dialogService.ShowMessageBox("資訊", "帳號已新增");
         }
 
         private List<AccountDetailDto> ParseHandler(string input)

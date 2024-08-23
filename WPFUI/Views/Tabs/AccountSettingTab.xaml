@@ -20,13 +20,13 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <Button x:Name="SaveButton" Grid.Column="0" ToolTip="Save">
+            <Button x:Name="SaveButton" Grid.Column="0" ToolTip="儲存">
                 <materialDesign:PackIcon Width="{DynamicResource IconSize}" Height="{DynamicResource IconSize}" Kind="ContentSave" />
             </Button>
-            <Button x:Name="ImportButton" Grid.Column="1" Style="{DynamicResource MaterialDesignRaisedDarkButton}"  Width="{DynamicResource ButtonWidth}" ToolTip="Import">
+            <Button x:Name="ImportButton" Grid.Column="1" Style="{DynamicResource MaterialDesignRaisedDarkButton}"  Width="{DynamicResource ButtonWidth}" ToolTip="匯入">
                 <materialDesign:PackIcon Width="{DynamicResource IconSize}" Height="{DynamicResource IconSize}" Kind="Import" />
             </Button>
-            <Button x:Name="ExportButton" Grid.Column="2" Style="{DynamicResource MaterialDesignRaisedDarkButton}"  Width="{DynamicResource ButtonWidth}" ToolTip="Export">
+            <Button x:Name="ExportButton" Grid.Column="2" Style="{DynamicResource MaterialDesignRaisedDarkButton}"  Width="{DynamicResource ButtonWidth}" ToolTip="匯出">
                 <materialDesign:PackIcon Width="{DynamicResource IconSize}" Height="{DynamicResource IconSize}" Kind="Export" />
             </Button>
         </Grid>
@@ -34,35 +34,35 @@
             <StackPanel>
                 <Border Style="{DynamicResource Box}">
                     <StackPanel>
-                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Account information" VerticalAlignment="Center" FontWeight="Bold" />
-                        <uc:TribeSelectorUc x:Name="Tribes" Text="Tribe" />
+                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="帳戶訊息" VerticalAlignment="Center" FontWeight="Bold" />
+                        <uc:TribeSelectorUc x:Name="Tribes" Text="部落" />
                     </StackPanel>
                 </Border>
                 <Border Style="{DynamicResource Box}">
                     <StackPanel>
-                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Activity settings" VerticalAlignment="Center" FontWeight="Bold" />
-                        <uc:RangeInputUc x:Name="WorkTime" Text="Work time" Unit="minutes" />
-                        <uc:RangeInputUc x:Name="SleepTime" Text="Sleep time" Unit="minutes" />
+                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="活動設定" VerticalAlignment="Center" FontWeight="Bold" />
+                        <uc:RangeInputUc x:Name="WorkTime" Text="工作時間" Unit="minutes" />
+                        <uc:RangeInputUc x:Name="SleepTime" Text="睡眠時間" Unit="minutes" />
                     </StackPanel>
                 </Border>
                 <Border Style="{DynamicResource Box}">
                     <StackPanel>
-                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Delay settings" VerticalAlignment="Center" FontWeight="Bold" />
-                        <uc:RangeInputUc x:Name="ClickDelay" Text="Click delay" Unit="milliseconds" />
-                        <uc:RangeInputUc x:Name="TaskDelay" Text="Task delay" Unit="milliseconds" />
+                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="延遲設定" VerticalAlignment="Center" FontWeight="Bold" />
+                        <uc:RangeInputUc x:Name="ClickDelay" Text="點擊延遲" Unit="milliseconds" />
+                        <uc:RangeInputUc x:Name="TaskDelay" Text="任務延遲" Unit="milliseconds" />
                     </StackPanel>
                 </Border>
                 <Border Style="{DynamicResource Box}">
                     <StackPanel>
-                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Feature settings" VerticalAlignment="Center" FontWeight="Bold" />
-                        <CheckBox x:Name="EnableAutoLoadVillage" Content="Enable auto load village's building" />
-                        <CheckBox x:Name="EnableAutoStartAdventure" Content="Enable auto start adventure" />
+                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="功能設定" VerticalAlignment="Center" FontWeight="Bold" />
+                        <CheckBox x:Name="EnableAutoLoadVillage" Content="啟用自動載入村莊建築" />
+                        <CheckBox x:Name="EnableAutoStartAdventure" Content="啟用自動開始冒險" />
                     </StackPanel>
                 </Border>
                 <Border Style="{DynamicResource Box}">
                     <StackPanel>
-                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Chrome settings" VerticalAlignment="Center" FontWeight="Bold" />
-                        <CheckBox x:Name="HeadlessChrome" Content="Use headless chrome" />
+                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Chrome設定" VerticalAlignment="Center" FontWeight="Bold" />
+                        <CheckBox x:Name="HeadlessChrome" Content="使用無視窗chrome" />
                     </StackPanel>
                 </Border>
             </StackPanel>

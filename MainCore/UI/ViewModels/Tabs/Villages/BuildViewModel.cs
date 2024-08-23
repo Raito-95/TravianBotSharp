@@ -74,7 +74,7 @@ namespace MainCore.UI.ViewModels.Tabs.Villages
             LoadBuilding = ReactiveCommand.Create<VillageId, List<ListBoxItem>>(LoadBuildingHandler);
             LoadJob = ReactiveCommand.Create<VillageId, List<ListBoxItem>>(LoadJobHandler);
             LoadQueue = ReactiveCommand.Create<VillageId, List<ListBoxItem>>(LoadQueueHandler);
-            LoadBuildNormal = ReactiveCommand.Create<ListBoxItem, List<BuildingEnums>>(LoadBuildNormalHanlder);
+            LoadBuildNormal = ReactiveCommand.Create<ListBoxItem, List<BuildingEnums>>(LoadBuildNormalHandler);
 
             this.WhenAnyValue(vm => vm.Buildings.SelectedItem)
                 .ObserveOn(RxApp.TaskpoolScheduler)
@@ -145,7 +145,7 @@ namespace MainCore.UI.ViewModels.Tabs.Villages
             return jobs;
         }
 
-        private List<BuildingEnums> LoadBuildNormalHanlder(ListBoxItem item)
+        private List<BuildingEnums> LoadBuildNormalHandler(ListBoxItem item)
         {
             if (item is null) return new();
             var buildings = GetNormalBuilding(VillageId, new BuildingId(item.Id));
@@ -175,13 +175,13 @@ namespace MainCore.UI.ViewModels.Tabs.Villages
             var status = _taskManager.GetStatus(AccountId);
             if (status == StatusEnums.Online)
             {
-                _dialogService.ShowMessageBox("Warning", "Please pause account before modifing building queue");
+                _dialogService.ShowMessageBox("警告", "請暫停帳號後再修改建築佇列");
                 return;
             }
             var result = await _resourceBuildInputValidator.ValidateAsync(ResourceBuildInput);
             if (!result.IsValid)
             {
-                _dialogService.ShowMessageBox("Error", result.ToString());
+                _dialogService.ShowMessageBox("錯誤", result.ToString());
                 return;
             }
 
@@ -220,7 +220,7 @@ namespace MainCore.UI.ViewModels.Tabs.Villages
             var status = _taskManager.GetStatus(AccountId);
             if (status == StatusEnums.Online)
             {
-                _dialogService.ShowMessageBox("Warning", "Please pause account before modifing building queue");
+                _dialogService.ShowMessageBox("警告", "請暫停帳號後再修改建築佇列");
                 return;
             }
             if (!Jobs.IsSelected) return;
@@ -235,7 +235,7 @@ namespace MainCore.UI.ViewModels.Tabs.Villages
             var status = _taskManager.GetStatus(AccountId);
             if (status == StatusEnums.Online)
             {
-                _dialogService.ShowMessageBox("Warning", "Please pause account before modifing building queue");
+                _dialogService.ShowMessageBox("警告", "請暫停帳號後再修改建築佇列");
                 return;
             }
             using var context = await _contextFactory.CreateDbContextAsync();
@@ -263,7 +263,7 @@ namespace MainCore.UI.ViewModels.Tabs.Villages
             jobs.ForEach(job => job.Id = JobId.Empty);
             var jsonString = JsonSerializer.Serialize(jobs);
             await File.WriteAllTextAsync(path, jsonString);
-            _dialogService.ShowMessageBox("Information", "Job list exported");
+            _dialogService.ShowMessageBox("資訊", "工作清單已匯出");
         }
 
         private List<ListBoxItem> GetBuildingItems(VillageId villageId)
@@ -291,7 +291,7 @@ namespace MainCore.UI.ViewModels.Tabs.Villages
             var item = new ListBoxItem()
             {
                 Id = building.Id.Value,
-                Content = $"[{building.Location}] {building.Type.Humanize()} | lvl {sb}",
+                Content = $"[{building.Location}] {GetNameInChinese(building.Type)} | lvl {sb}",
                 Color = building.Type.GetColor(),
             };
             return item;
@@ -355,7 +355,7 @@ namespace MainCore.UI.ViewModels.Tabs.Villages
                 .Select(x => new ListBoxItem()
                 {
                     Id = x.Id,
-                    Content = $"{x.Type.Humanize()} to level {x.Level} complete at {x.CompleteTime}",
+                    Content = $"{GetNameInChinese(x.Type)} 到等級 {x.Level} 完成於 {x.CompleteTime}",
                 })
                 .ToList();
 
@@ -398,12 +398,12 @@ namespace MainCore.UI.ViewModels.Tabs.Villages
                 case JobTypeEnums.NormalBuild:
                     {
                         var plan = JsonSerializer.Deserialize<NormalBuildPlan>(job.Content);
-                        return $"Build {plan.Type.Humanize()} to level {plan.Level} at location {plan.Location}";
+                        return $"建造 {GetNameInChinese(plan.Type)} 到等級 {plan.Level} 位置 {plan.Location}";
                     }
                 case JobTypeEnums.ResourceBuild:
                     {
                         var plan = JsonSerializer.Deserialize<ResourceBuildPlan>(job.Content);
-                        return $"Build {plan.Plan.Humanize()} to level {plan.Level}";
+                        return $"建造 {plan.Plan.Humanize()} 到等級 {plan.Level}";
                     }
                 default:
                     return job.Content;
@@ -427,7 +427,7 @@ namespace MainCore.UI.ViewModels.Tabs.Villages
             var status = _taskManager.GetStatus(accountId);
             if (status == StatusEnums.Online)
             {
-                _dialogService.ShowMessageBox("Warning", "Please pause account before modifing building queue");
+                _dialogService.ShowMessageBox("警告", "請暫停帳號後再修改建築佇列");
                 return;
             }
 
@@ -457,6 +457,22 @@ namespace MainCore.UI.ViewModels.Tabs.Villages
 
             new AddJobCommand().ToBottom(villageId, plan);
             await _mediator.Publish(new JobUpdated(accountId, villageId));
+        }
+        public static string GetNameInChinese(Enum enumValue)
+        {
+            switch (enumValue)
+            {
+                case BuildingEnums buildingEnum:
+                    return ((BuildingEnumsChinese)(int)buildingEnum).ToString();
+                case ResourcePlanEnums resourcePlanEnum:
+                    return ((ResourcePlanEnumsChinese)(int)resourcePlanEnum).ToString();
+                case TroopEnums troopEnum:
+                    return ((TroopEnumsChinese)(int)troopEnum).ToString();
+                case TribeEnums tribeEnum:
+                    return ((TribeEnumsChinese)(int)tribeEnum).ToString();
+                default:
+                    return enumValue.ToString();
+            }
         }
     }
 }
