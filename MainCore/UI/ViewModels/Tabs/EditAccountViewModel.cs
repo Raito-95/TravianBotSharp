@@ -7,7 +7,7 @@ using System.Reactive.Linq;
 
 namespace MainCore.UI.ViewModels.Tabs
 {
-    [RegisterAsViewModel]
+    [RegisterSingleton(Registration = RegistrationStrategy.Self)]
     public class EditAccountViewModel : AccountTabViewModelBase
     {
         public AccountInput AccountInput { get; } = new();
@@ -69,7 +69,14 @@ namespace MainCore.UI.ViewModels.Tabs
                 return;
             }
 
-            AccountInput.Accesses.Add(AccessInput.Clone());
+            if (AccountInput.Accesses.Count == 0)
+            {
+                AccountInput.Accesses.Add(AccessInput.Clone());
+            }
+            else
+            {
+                _dialogService.ShowMessageBox("錯誤", "由於新規則，僅允許一次訪問。請查看TBS的Discord。");
+            }
         }
 
         private void EditAccessHandler()

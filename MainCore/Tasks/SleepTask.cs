@@ -2,7 +2,7 @@
 
 namespace MainCore.Tasks
 {
-    [RegisterAsTask]
+    [RegisterTransient(Registration = RegistrationStrategy.Self)]
     public class SleepTask : AccountTask
     {
         private readonly ITaskManager _taskManager;
@@ -22,7 +22,7 @@ namespace MainCore.Tasks
             result = await Sleep();
             if (result.IsFailed) return result.WithError(TraceMessage.Error(TraceMessage.Line()));
 
-            var accessResult = await new GetAccess().Execute(AccountId);
+            var accessResult = new GetAccess().Execute(AccountId);
             if (accessResult.IsFailed) return Result.Fail(accessResult.Errors).WithError(TraceMessage.Error(TraceMessage.Line()));
             var access = accessResult.Value;
 

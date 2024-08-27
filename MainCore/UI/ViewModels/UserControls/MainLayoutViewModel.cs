@@ -9,7 +9,7 @@ using System.Reflection;
 
 namespace MainCore.UI.ViewModels.UserControls
 {
-    [RegisterAsViewModel]
+    [RegisterSingleton(Registration = RegistrationStrategy.Self)]
     public class MainLayoutViewModel : ViewModelBase
     {
         private readonly IMediator _mediator;
@@ -153,7 +153,7 @@ namespace MainCore.UI.ViewModels.UserControls
             await _taskManager.SetStatus(accountId, StatusEnums.Starting);
             var logger = _logService.GetLogger(accountId);
 
-            var result = await new GetAccess().Execute(accountId, true);
+            var result = new GetAccess().Execute(accountId, true);
 
             if (result.IsFailed)
             {
