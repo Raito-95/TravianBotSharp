@@ -266,7 +266,7 @@ namespace MainCore.UI.ViewModels.Tabs.Villages
             _dialogService.ShowMessageBox("資訊", "工作清單已匯出");
         }
 
-        private List<ListBoxItem> GetBuildingItems(VillageId villageId)
+        private static List<ListBoxItem> GetBuildingItems(VillageId villageId)
         {
             var items = new GetBuildings().Execute(villageId).Select(x => ToListBoxItem(x)).ToList();
             return items;
@@ -328,13 +328,9 @@ namespace MainCore.UI.ViewModels.Tabs.Villages
         {
             BuildingEnums.Site,
             BuildingEnums.Blacksmith,
-            BuildingEnums.GreatBarracks,
-            BuildingEnums.GreatStable,
             BuildingEnums.CityWall,
             BuildingEnums.EarthWall,
             BuildingEnums.Palisade,
-            BuildingEnums.GreatWarehouse,
-            BuildingEnums.GreatGranary,
             BuildingEnums.WW,
             BuildingEnums.StoneWall,
             BuildingEnums.MakeshiftWall,

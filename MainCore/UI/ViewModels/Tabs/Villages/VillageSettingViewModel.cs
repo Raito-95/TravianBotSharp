@@ -100,7 +100,7 @@ namespace MainCore.UI.ViewModels.Tabs.Villages
             _dialogService.ShowMessageBox("資訊", "設定已匯出");
         }
 
-        private Dictionary<VillageSettingEnums, int> LoadSettingHandler(VillageId villageId)
+        private static Dictionary<VillageSettingEnums, int> LoadSettingHandler(VillageId villageId)
         {
             var settings = new GetSetting().Get(villageId);
             return settings;

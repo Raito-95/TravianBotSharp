@@ -102,7 +102,7 @@ namespace MainCore.UI.ViewModels.Tabs
             _dialogService.ShowMessageBox("資訊", "設定已匯出");
         }
 
-        private Dictionary<AccountSettingEnums, int> LoadSettingsHandler(AccountId accountId)
+        private static Dictionary<AccountSettingEnums, int> LoadSettingsHandler(AccountId accountId)
         {
             var settings = new GetSetting().Get(accountId);
             return settings;

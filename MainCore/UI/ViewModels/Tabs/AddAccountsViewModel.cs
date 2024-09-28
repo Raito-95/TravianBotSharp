@@ -72,7 +72,7 @@ namespace MainCore.UI.ViewModels.Tabs
             _dialogService.ShowMessageBox("資訊", "帳號已新增");
         }
 
-        private List<AccountDetailDto> ParseHandler(string input)
+        private static List<AccountDetailDto> ParseHandler(string input)
         {
             if (string.IsNullOrEmpty(input)) return new List<AccountDetailDto>();
 
