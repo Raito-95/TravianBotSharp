@@ -25,18 +25,18 @@ namespace MainCore.Commands.UI
 
             if (!results.IsValid)
             {
-                _dialogService.ShowMessageBox("Error", results.ToString());
+                _dialogService.ShowMessageBox("錯誤", results.ToString());
                 return Result.Ok();
             }
 
-            await _waitingOverlayViewModel.Show("editing account");
+            await _waitingOverlayViewModel.Show("正在編輯帳號");
 
             var dto = accountInput.ToDto();
             Update(dto);
             await _mediator.Publish(new AccountUpdated());
             await _waitingOverlayViewModel.Hide();
 
-            _dialogService.ShowMessageBox("Information", "Edited account");
+            _dialogService.ShowMessageBox("訊息", "帳號已編輯");
             return Result.Ok();
         }
 

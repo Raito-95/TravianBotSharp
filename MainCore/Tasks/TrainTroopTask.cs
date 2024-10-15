@@ -36,7 +36,11 @@ namespace MainCore.Tasks
                 {
                     if (result.HasError<MissingBuilding>())
                     {
-                        settings.Add(TrainTroopCommand.BuildingSettings[building], 0);
+                        var settingKey = TrainTroopCommand.BuildingSettings[building];
+                        if (!settings.ContainsKey(settingKey) || settings[settingKey] != 0)
+                        {
+                            settings.Add(settingKey, 0);
+                        }
                     }
                     else if (result.HasError<MissingResource>())
                     {
@@ -45,7 +49,10 @@ namespace MainCore.Tasks
                 }
             }
 
-            await _saveSettingCommand.Execute(AccountId, VillageId, settings, cancellationToken);
+            if (settings.Count > 0)
+            {
+                await _saveSettingCommand.Execute(AccountId, VillageId, settings, cancellationToken);
+            }
             await SetNextExecute();
             return Result.Ok();
         }
@@ -65,6 +72,8 @@ namespace MainCore.Tasks
             var settings = new List<VillageSettingEnums>() {
                 VillageSettingEnums.BarrackTroop,
                 VillageSettingEnums.StableTroop,
+                VillageSettingEnums.GreatBarrackTroop,
+                VillageSettingEnums.GreatStableTroop,
                 VillageSettingEnums.WorkshopTroop,
             };
 
@@ -84,6 +93,14 @@ namespace MainCore.Tasks
             if (filterdSettings.Contains(VillageSettingEnums.StableTroop))
             {
                 buildings.Add(BuildingEnums.Stable);
+            }
+            if (filterdSettings.Contains(VillageSettingEnums.GreatBarrackTroop))
+            {
+                buildings.Add(BuildingEnums.GreatBarracks);
+            }
+            if (filterdSettings.Contains(VillageSettingEnums.GreatStableTroop))
+            {
+                buildings.Add(BuildingEnums.GreatStable);
             }
             if (filterdSettings.Contains(VillageSettingEnums.WorkshopTroop))
             {

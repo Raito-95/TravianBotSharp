@@ -33,14 +33,14 @@ namespace MainCore.UI
         private void Handle(Exception exception)
         {
             if (exception is null) return;
-            Log.Error(exception, "UI execption");
+            Log.Error(exception, "UI 異常");
             if (Debugger.IsAttached)
             {
                 Debugger.Break();
                 RxApp.MainThreadScheduler.Schedule(() => { throw exception; });
             }
 
-            _dialogService.ShowMessageBox("錯誤", "發生錯誤。請檢查 logs/logs-Other.txt。");
+            _dialogService.ShowMessageBox("錯誤", "出現問題。請檢查 logs/logs-Other.txt。");
         }
     }
 }

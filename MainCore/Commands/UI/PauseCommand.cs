@@ -28,7 +28,7 @@
                 return;
             }
 
-            _dialogService.ShowMessageBox("Information", $"Account is {status}");
+            _dialogService.ShowMessageBox("訊息", $"帳號當前狀態為 {status}");
         }
     }
 }

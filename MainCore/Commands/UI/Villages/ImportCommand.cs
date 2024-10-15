@@ -19,7 +19,7 @@ namespace MainCore.Commands.UI.Villages
             _getBuildings = getBuildings;
         }
 
-        private static readonly List<int> _excludedLocations = new() { 26, 39, 40 }; //main building, rallypoint and wall
+        private static readonly List<int> _excludedLocations = new() { 26, 39, 40 }; //主建築、集結點和城牆
 
         private static readonly Dictionary<ResourcePlanEnums, List<BuildingEnums>> _fieldList = new()
         {
@@ -51,7 +51,7 @@ namespace MainCore.Commands.UI.Villages
                 return;
             }
 
-            var confirm = _dialogService.ShowConfirmBox("警告", "TBS將刪除資源田建築任務，如果其位置與當前村莊不匹配。");
+            var confirm = _dialogService.ShowConfirmBox("警告", "如果資源田的位置與當前村莊不匹配，TBS 將移除資源田建設任務。");
             if (!confirm) return;
 
             var modifiedJobs = GetModifiedJobs(villageId, jobs);
@@ -59,7 +59,7 @@ namespace MainCore.Commands.UI.Villages
 
             await _mediator.Publish(new JobUpdated(accountId, villageId));
 
-            _dialogService.ShowMessageBox("資訊", "任務已匯入");
+            _dialogService.ShowMessageBox("訊息", "任務已匯入");
         }
 
         private IEnumerable<JobDto> GetModifiedJobs(VillageId villageId, List<JobDto> jobs)

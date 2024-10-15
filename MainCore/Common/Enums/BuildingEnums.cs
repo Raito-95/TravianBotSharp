@@ -51,7 +51,7 @@
         Waterworks,
         Hospital,
     }
-    public enum BuildingEnumsChinese
+        public enum BuildingEnumsTW
     {
         空地 = 0,
         伐木場,

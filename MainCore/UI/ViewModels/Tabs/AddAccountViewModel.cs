@@ -53,18 +53,7 @@ namespace MainCore.UI.ViewModels.Tabs
                 return;
             }
 
-<<<<<<< HEAD
-            if (AccountInput.Accesses.Count == 0)
-            {
-                AccountInput.Accesses.Add(AccessInput.Clone());
-            }
-            else
-            {
-                _dialogService.ShowMessageBox("錯誤", "由於新規則，僅允許一次訪問。請查看TBS的Discord。");
-            }
-=======
             AccountInput.Accesses.Add(AccessInput.Clone());
->>>>>>> upstream/main
         }
 
         private void EditAccessHandler()
@@ -87,49 +76,8 @@ namespace MainCore.UI.ViewModels.Tabs
 
         private async Task AddAccountHandler()
         {
-<<<<<<< HEAD
-            var results = await _accountInputValidator.ValidateAsync(AccountInput);
-
-            if (!results.IsValid)
-            {
-                _dialogService.ShowMessageBox("錯誤", results.ToString());
-                return;
-            }
-            await _waitingOverlayViewModel.Show("新增帳號中");
-
-            var dto = AccountInput.ToDto();
-            var success = Add(dto);
-            if (success) await _mediator.Publish(new AccountUpdated());
-
-            await _waitingOverlayViewModel.Hide();
-            _dialogService.ShowMessageBox("資訊", success ? "帳號已新增" : "帳號重複");
-        }
-
-        private bool Add(AccountDto dto)
-        {
-            using var context = _contextFactory.CreateDbContext();
-
-            var isExist = context.Accounts
-                .Where(x => x.Username == dto.Username)
-                .Where(x => x.Server == dto.Server)
-                .Any();
-
-            if (isExist) return false;
-
-            var account = dto.ToEntity();
-            foreach (var access in account.Accesses.Where(access => string.IsNullOrEmpty(access.Useragent)))
-            {
-                access.Useragent = _useragentManager.Get();
-            }
-
-            context.Add(account);
-            context.SaveChanges();
-            context.FillAccountSettings(new(account.Id));
-            return true;
-=======
             var addAccountCommand = Locator.Current.GetService<AddAccountCommand>();
             await addAccountCommand.Execute(AccountInput, default);
->>>>>>> upstream/main
         }
 
         private AccessInput _selectedAccess;

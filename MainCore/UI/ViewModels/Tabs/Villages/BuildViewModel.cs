@@ -66,7 +66,7 @@ namespace MainCore.UI.ViewModels.Tabs.Villages
             LoadBuilding = ReactiveCommand.Create<VillageId, List<ListBoxItem>>(LoadBuildingHandler);
             LoadJob = ReactiveCommand.Create<VillageId, List<ListBoxItem>>(LoadJobHandler);
             LoadQueue = ReactiveCommand.Create<VillageId, List<ListBoxItem>>(LoadQueueHandler);
-            LoadBuildNormal = ReactiveCommand.Create<ListBoxItem, List<BuildingEnums>>(LoadBuildNormalHandler);
+            LoadBuildNormal = ReactiveCommand.Create<ListBoxItem, List<BuildingEnums>>(LoadBuildNormalHanlder);
 
             this.WhenAnyValue(vm => vm.Buildings.SelectedItem)
                 .ObserveOn(RxApp.TaskpoolScheduler)
@@ -141,7 +141,7 @@ namespace MainCore.UI.ViewModels.Tabs.Villages
             return jobs;
         }
 
-        private List<BuildingEnums> LoadBuildNormalHandler(ListBoxItem item)
+        private List<BuildingEnums> LoadBuildNormalHanlder(ListBoxItem item)
         {
             if (item is null) return [];
             var getBuildings = Locator.Current.GetService<GetBuildings>();
@@ -178,22 +178,7 @@ namespace MainCore.UI.ViewModels.Tabs.Villages
 
         private async Task ResourceNormalHandler()
         {
-<<<<<<< HEAD
-            var status = _taskManager.GetStatus(AccountId);
-            if (status == StatusEnums.Online)
-            {
-                _dialogService.ShowMessageBox("警告", "請暫停帳號後再修改建築佇列");
-                return;
-            }
-            var result = await _resourceBuildInputValidator.ValidateAsync(ResourceBuildInput);
-            if (!result.IsValid)
-            {
-                _dialogService.ShowMessageBox("錯誤", result.ToString());
-                return;
-            }
-=======
             if (!IsAccountPaused(AccountId)) return;
->>>>>>> upstream/main
 
             var buildResourceCommand = Locator.Current.GetService<BuildResourceCommand>();
             await buildResourceCommand.Execute(AccountId, VillageId, ResourceBuildInput);
@@ -229,16 +214,7 @@ namespace MainCore.UI.ViewModels.Tabs.Villages
 
         private async Task DeleteHandler()
         {
-<<<<<<< HEAD
-            var status = _taskManager.GetStatus(AccountId);
-            if (status == StatusEnums.Online)
-            {
-                _dialogService.ShowMessageBox("警告", "請暫停帳號後再修改建築佇列");
-                return;
-            }
-=======
             if (!IsAccountPaused(AccountId)) return;
->>>>>>> upstream/main
             if (!Jobs.IsSelected) return;
             var jobId = Jobs.SelectedItemId;
 
@@ -249,27 +225,9 @@ namespace MainCore.UI.ViewModels.Tabs.Villages
 
         private async Task DeleteAllHandler()
         {
-<<<<<<< HEAD
-            var status = _taskManager.GetStatus(AccountId);
-            if (status == StatusEnums.Online)
-            {
-                _dialogService.ShowMessageBox("警告", "請暫停帳號後再修改建築佇列");
-                return;
-            }
-            using var context = await _contextFactory.CreateDbContextAsync();
-
-            //sqlite async dont work
-#pragma warning disable S6966 // Awaitable method should be used
-            context.Jobs
-                .Where(x => x.VillageId == VillageId.Value)
-                .ExecuteDelete();
-#pragma warning restore S6966 // Awaitable method should be used
-
-=======
             if (!IsAccountPaused(AccountId)) return;
             var deleteJobCommand = Locator.Current.GetService<DeleteJobCommand>();
             deleteJobCommand.ByVillageId(VillageId);
->>>>>>> upstream/main
             await _mediator.Publish(new JobUpdated(AccountId, VillageId));
         }
 
@@ -289,195 +247,18 @@ namespace MainCore.UI.ViewModels.Tabs.Villages
             jobs.ForEach(job => job.Id = JobId.Empty);
             var jsonString = JsonSerializer.Serialize(jobs);
             await File.WriteAllTextAsync(path, jsonString);
-            _dialogService.ShowMessageBox("資訊", "工作清單已匯出");
+            _dialogService.ShowMessageBox("訊息", "任務清單已匯出");
         }
 
-<<<<<<< HEAD
-        private static List<ListBoxItem> GetBuildingItems(VillageId villageId)
-        {
-            var items = new GetBuildings().Execute(villageId).Select(x => ToListBoxItem(x)).ToList();
-            return items;
-        }
-
-        private static ListBoxItem ToListBoxItem(BuildingItem building)
-        {
-            const string arrow = " -> ";
-            var sb = new StringBuilder();
-            sb.Append(building.CurrentLevel);
-            if (building.QueueLevel != 0)
-            {
-                var content = $"{arrow}({building.QueueLevel})";
-                sb.Append(content);
-            }
-            if (building.JobLevel != 0)
-            {
-                var content = $"{arrow}[{building.JobLevel}]";
-                sb.Append(content);
-            }
-
-            var item = new ListBoxItem()
-            {
-                Id = building.Id.Value,
-                Content = $"[{building.Location}] {GetNameInChinese(building.Type)} | lvl {sb}",
-                Color = building.Type.GetColor(),
-            };
-            return item;
-        }
-
-        private List<BuildingEnums> GetNormalBuilding(VillageId villageId, BuildingId buildingId)
-        {
-            var buildingItems = new GetBuildings().Execute(villageId);
-            var type = buildingItems
-                .Where(x => x.Id == buildingId)
-                .Select(x => x.Type)
-                .FirstOrDefault();
-            if (type != BuildingEnums.Site) return new() { type };
-            using var context = _contextFactory.CreateDbContext();
-
-            var buildings = buildingItems
-                .Select(x => x.Type)
-                .Where(x => !MultipleBuildings.Contains(x))
-                .Distinct()
-                .ToList();
-
-            return AvailableBuildings.Where(x => !buildings.Contains(x)).ToList();
-        }
-
-        private static readonly List<BuildingEnums> MultipleBuildings = new()
-        {
-            BuildingEnums.Warehouse,
-            BuildingEnums.Granary,
-            BuildingEnums.Trapper,
-            BuildingEnums.Cranny,
-        };
-
-        private static readonly List<BuildingEnums> IgnoreBuildings = new()
-        {
-            BuildingEnums.Site,
-            BuildingEnums.Blacksmith,
-            BuildingEnums.CityWall,
-            BuildingEnums.EarthWall,
-            BuildingEnums.Palisade,
-            BuildingEnums.WW,
-            BuildingEnums.StoneWall,
-            BuildingEnums.MakeshiftWall,
-        };
-
-        private static readonly IEnumerable<BuildingEnums> AvailableBuildings = Enum.GetValues(typeof(BuildingEnums))
-            .Cast<BuildingEnums>()
-            .Where(x => !IgnoreBuildings.Contains(x));
-
-        private List<ListBoxItem> GetQueueItems(VillageId villageId)
-        {
-            using var context = _contextFactory.CreateDbContext();
-
-            var queue = context.QueueBuildings
-                .Where(x => x.VillageId == villageId.Value)
-                .Where(x => x.Type != BuildingEnums.Site)
-                .AsEnumerable()
-                .Select(x => new ListBoxItem()
-                {
-                    Id = x.Id,
-                    Content = $"{GetNameInChinese(x.Type)} 到等級 {x.Level} 完成於 {x.CompleteTime}",
-                })
-                .ToList();
-
-            var tribe = (TribeEnums)context.VillagesSetting
-                .Where(x => x.VillageId == villageId.Value)
-                .Where(x => x.Setting == VillageSettingEnums.Tribe)
-                .Select(x => x.Value)
-                .FirstOrDefault();
-
-            var count = 2;
-            if (tribe == TribeEnums.Romans) count = 3;
-            queue.AddRange(Enumerable.Range(0, count - queue.Count).Select(x => new ListBoxItem()));
-
-            return queue;
-        }
-
-        private List<ListBoxItem> GetJobItems(VillageId villageId)
-        {
-            using var context = _contextFactory.CreateDbContext();
-
-            var items = context.Jobs
-                .Where(x => x.VillageId == villageId.Value)
-                .OrderBy(x => x.Position)
-                .ToDto()
-                .AsEnumerable()
-                .Select(x => new ListBoxItem()
-                {
-                    Id = x.Id.Value,
-                    Content = GetContent(x),
-                })
-                .ToList();
-
-            return items;
-        }
-
-        private static string GetContent(JobDto job)
-        {
-            switch (job.Type)
-            {
-                case JobTypeEnums.NormalBuild:
-                    {
-                        var plan = JsonSerializer.Deserialize<NormalBuildPlan>(job.Content);
-                        return $"建造 {GetNameInChinese(plan.Type)} 到等級 {plan.Level} 位置 {plan.Location}";
-                    }
-                case JobTypeEnums.ResourceBuild:
-                    {
-                        var plan = JsonSerializer.Deserialize<ResourceBuildPlan>(job.Content);
-                        return $"建造 {plan.Plan.Humanize()} 到等級 {plan.Level}";
-                    }
-                default:
-                    return job.Content;
-            }
-        }
-
-        private List<JobDto> GetJobs(VillageId villageId)
-        {
-            using var context = _contextFactory.CreateDbContext();
-
-            var jobs = context.Jobs
-                .Where(x => x.VillageId == villageId.Value)
-                .OrderBy(x => x.Position)
-                .ToDto()
-                .ToList();
-            return jobs;
-        }
-
-        public async Task UpgradeLevel(AccountId accountId, VillageId villageId, int location, bool isMaxLevel)
-=======
         private bool IsAccountPaused(AccountId accountId)
->>>>>>> upstream/main
         {
             var status = _taskManager.GetStatus(accountId);
             if (status == StatusEnums.Online)
             {
-<<<<<<< HEAD
-                _dialogService.ShowMessageBox("警告", "請暫停帳號後再修改建築佇列");
-                return;
-=======
-                _dialogService.ShowMessageBox("Warning", "Please pause account before modifing building queue");
+                _dialogService.ShowMessageBox("警告", "請先暫停帳號再修改建築佇列");
                 return false;
->>>>>>> upstream/main
             }
             return true;
-        }
-        public static string GetNameInChinese(Enum enumValue)
-        {
-            switch (enumValue)
-            {
-                case BuildingEnums buildingEnum:
-                    return ((BuildingEnumsChinese)(int)buildingEnum).ToString();
-                case ResourcePlanEnums resourcePlanEnum:
-                    return ((ResourcePlanEnumsChinese)(int)resourcePlanEnum).ToString();
-                case TroopEnums troopEnum:
-                    return ((TroopEnumsChinese)(int)troopEnum).ToString();
-                case TribeEnums tribeEnum:
-                    return ((TribeEnumsChinese)(int)tribeEnum).ToString();
-                default:
-                    return enumValue.ToString();
-            }
         }
     }
 }

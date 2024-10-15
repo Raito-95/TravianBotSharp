@@ -32,13 +32,13 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <Button x:Name="AddAccountButton"   Content="新增帳號"       Grid.ColumnSpan="3" Grid.Row="0" Margin="0,0,0,2" />
-                <Button x:Name="AddAccountsButton"  Content="新增多個帳號"      Grid.ColumnSpan="3" Grid.Row="1" Margin="0,0,0,2" />
-                <Button x:Name="LoginButton"        Content="登入"             Grid.Column="0"     Grid.Row="2" Margin="0,0,0,2" />
-                <Button x:Name="LogoutButton"       Content="登出"            Grid.Column="2"     Grid.Row="2" Margin="0,0,0,2" />
-                <Button x:Name="DeleteButton"       Content="刪除"            Grid.ColumnSpan="3" Grid.Row="3" Margin="0,0,0,2" />
-                <Button x:Name="PauseButton"        Content="暫停"             Grid.Column="0"     Grid.Row="4" Margin="0,0,0,2" />
-                <Button x:Name="RestartButton"      Content="重啟"           Grid.Column="2"     Grid.Row="4" Margin="0,0,0,2" />
+                <Button x:Name="AddAccountButton"   Content="新增帳號" Grid.ColumnSpan="3" Grid.Row="0" Margin="0,0,0,2" />
+                <Button x:Name="AddAccountsButton"  Content="新增多個帳號" Grid.ColumnSpan="3" Grid.Row="1" Margin="0,0,0,2" />
+                <Button x:Name="LoginButton"        Content="登入" Grid.Column="0" Grid.Row="2" Margin="0,0,0,2" />
+                <Button x:Name="LogoutButton"       Content="登出" Grid.Column="2" Grid.Row="2" Margin="0,0,0,2" />
+                <Button x:Name="DeleteButton"       Content="刪除" Grid.ColumnSpan="3" Grid.Row="3" Margin="0,0,0,2" />
+                <Button x:Name="PauseButton"        Content="暫停" Grid.Column="0" Grid.Row="4" Margin="0,0,0,2" />
+                <Button x:Name="RestartButton"      Content="重啟" Grid.Column="2" Grid.Row="4" Margin="0,0,0,2" />
             </Grid>
             <Border Style="{DynamicResource Box}" Grid.Row="1">
                 <ListBox x:Name="AccountGrid" SelectionMode="Single" ItemTemplate="{DynamicResource ListBoxColorItem}" />

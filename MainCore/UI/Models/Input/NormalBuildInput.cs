@@ -20,7 +20,15 @@ namespace MainCore.UI.Models.Input
         public void Set(List<BuildingEnums> buildings, int level = -1)
         {
             Buildings.Clear();
-            var comboboxItems = buildings.Select(x => new ComboBoxItem<BuildingEnums>(x, x.Humanize())).ToList();
+            
+            var comboboxItems = buildings
+                .Select(x =>
+                {
+                    var twEnumValue = (BuildingEnumsTW)(int)x;
+                    return new ComboBoxItem<BuildingEnums>(x, twEnumValue.Humanize());
+                })
+                .ToList();
+
             Buildings.AddRange(comboboxItems);
 
             if (comboboxItems.Count > 0)

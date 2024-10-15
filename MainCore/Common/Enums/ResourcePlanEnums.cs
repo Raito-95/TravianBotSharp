@@ -6,7 +6,7 @@
         ExcludeCrop,
         OnlyCrop
     }
-    public enum ResourcePlanEnumsChinese
+    public enum ResourcePlanEnumsTW
     {
         所有資源,
         農場除外,

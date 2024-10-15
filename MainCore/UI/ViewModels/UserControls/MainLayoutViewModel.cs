@@ -58,7 +58,7 @@ namespace MainCore.UI.ViewModels.UserControls
                 .InvokeCommand(GetStatus);
 
             LoadVersion
-                .Do(version => Log.Information("===============> Current version: {Version} <===============", version))
+                .Do(version => Log.Information("===============> 當前版本: {Version} <===============", version))
                 .ToProperty(this, x => x.Version, out _version);
 
             LoadAccount.Subscribe(Accounts.Load);
@@ -97,21 +97,11 @@ namespace MainCore.UI.ViewModels.UserControls
         {
             if (!Accounts.IsSelected)
             {
-                _dialogService.ShowMessageBox("警告", "未選擇帳號");
+                _dialogService.ShowMessageBox("警告", "尚未選擇帳號");
                 return;
             }
 
-<<<<<<< HEAD
-            var status = _taskManager.GetStatus(accountId);
-            if (status != StatusEnums.Offline)
-            {
-                _dialogService.ShowMessageBox("警告", "帳號應該是離線狀態");
-                return;
-            }
-            var result = _dialogService.ShowConfirmBox("資訊", $"確定要刪除 \n {Accounts.SelectedItem.Content} 嗎？");
-=======
-            var result = _dialogService.ShowConfirmBox("Information", $"Are you sure want to delete \n {Accounts.SelectedItem.Content}");
->>>>>>> upstream/main
+            var result = _dialogService.ShowConfirmBox("訊息", $"確定要刪除帳號\n {Accounts.SelectedItem.Content} 嗎？");
             if (!result) return;
 
             var accountId = new AccountId(Accounts.SelectedItemId);
@@ -123,183 +113,53 @@ namespace MainCore.UI.ViewModels.UserControls
         {
             if (!Accounts.IsSelected)
             {
-                _dialogService.ShowMessageBox("警告", "未選擇帳號");
+                _dialogService.ShowMessageBox("警告", "尚未選擇帳號");
                 return;
             }
 
             var accountId = new AccountId(Accounts.SelectedItemId);
-<<<<<<< HEAD
-
-            var tribe = (TribeEnums)new GetSetting().ByName(accountId, AccountSettingEnums.Tribe);
-            if (tribe == TribeEnums.Any)
-            {
-                _dialogService.ShowMessageBox("警告", "請先選擇部落");
-                return;
-            }
-
-            if (_taskManager.GetStatus(accountId) != StatusEnums.Offline)
-            {
-                _dialogService.ShowMessageBox("警告", "帳號的瀏覽器已經開啟");
-                return;
-            }
-
-            await _taskManager.SetStatus(accountId, StatusEnums.Starting);
-            var logger = _logService.GetLogger(accountId);
-
-            var result = new GetAccess().Execute(accountId, true);
-
-            if (result.IsFailed)
-            {
-                _dialogService.ShowMessageBox("錯誤", result.Errors.Select(x => x.Message).First());
-                var errors = result.Errors.Select(x => x.Message).ToList();
-                logger.Error("{Errors}", string.Join(Environment.NewLine, errors));
-
-                await _taskManager.SetStatus(accountId, StatusEnums.Offline);
-                return;
-            }
-            var access = result.Value;
-            logger.Information("使用連線 {Proxy} 開始 Chrome 瀏覽器", access.Proxy);
-
-            var chromeBrowser = _chromeManager.Get(accountId);
-
-            result = await new OpenBrowserCommand().Execute(chromeBrowser, accountId, access, CancellationToken.None);
-            if (result.IsFailed)
-            {
-                _dialogService.ShowMessageBox("錯誤", result.Errors.Select(x => x.Message).First());
-                var errors = result.Errors.Select(x => x.Message).ToList();
-                logger.Error("{Errors}", string.Join(Environment.NewLine, errors));
-                await _taskManager.SetStatus(accountId, StatusEnums.Offline);
-                await chromeBrowser.Close();
-                return;
-            }
-            await _mediator.Publish(new AccountInit(accountId));
-
-            _timerManager.Start(accountId);
-            await _taskManager.SetStatus(accountId, StatusEnums.Online);
-=======
             var loginCommand = Locator.Current.GetService<LoginCommand>();
             await loginCommand.Execute(accountId, CancellationToken.None);
->>>>>>> upstream/main
         }
 
         private async Task LogoutTask()
         {
             if (!Accounts.IsSelected)
             {
-                _dialogService.ShowMessageBox("警告", "未選擇帳號");
+                _dialogService.ShowMessageBox("警告", "尚未選擇帳號");
                 return;
             }
 
             var accountId = new AccountId(Accounts.SelectedItemId);
-<<<<<<< HEAD
-            var status = _taskManager.GetStatus(accountId);
-            switch (status)
-            {
-                case StatusEnums.Offline:
-                    _dialogService.ShowMessageBox("警告", "帳號的瀏覽器已經關閉");
-                    return;
-
-                case StatusEnums.Starting:
-                case StatusEnums.Pausing:
-                case StatusEnums.Stopping:
-                    _dialogService.ShowMessageBox("警告", $"TBS 正在 {status}。請稍候");
-                    return;
-
-                case StatusEnums.Online:
-                case StatusEnums.Paused:
-                    break;
-
-                default:
-                    break;
-            }
-
-            await _taskManager.SetStatus(accountId, StatusEnums.Stopping);
-            await _taskManager.StopCurrentTask(accountId);
-
-            var chromeBrowser = _chromeManager.Get(accountId);
-            await chromeBrowser.Close();
-
-            await _taskManager.SetStatus(accountId, StatusEnums.Offline);
-=======
 
             var logoutCommand = Locator.Current.GetService<LogoutCommand>();
             await logoutCommand.Execute(accountId, CancellationToken.None);
->>>>>>> upstream/main
         }
 
         private async Task PauseTask()
         {
             if (!Accounts.IsSelected)
             {
-<<<<<<< HEAD
-                _dialogService.ShowMessageBox("警告", "未選擇帳號");
-                return StatusEnums.Offline;
-            }
-
-            var accountId = new AccountId(Accounts.SelectedItemId);
-            var status = _taskManager.GetStatus(accountId);
-            if (status == StatusEnums.Paused)
-            {
-                await _taskManager.SetStatus(accountId, StatusEnums.Online);
-                return StatusEnums.Online;
-            }
-
-            if (status == StatusEnums.Online)
-            {
-                await _taskManager.StopCurrentTask(accountId);
-                await _taskManager.SetStatus(accountId, StatusEnums.Paused);
-                return StatusEnums.Paused;
-            }
-
-            _dialogService.ShowMessageBox("資訊", $"帳號當前狀態為 {status}");
-            return status;
-=======
-                _dialogService.ShowMessageBox("Warning", "No account selected");
+                _dialogService.ShowMessageBox("警告", "尚未選擇帳號");
                 return;
             }
 
             var accountId = new AccountId(Accounts.SelectedItemId);
             var pauseCommand = Locator.Current.GetService<PauseCommand>();
             await pauseCommand.Execute(accountId, CancellationToken.None);
->>>>>>> upstream/main
         }
 
         private async Task RestartTask()
         {
             if (!Accounts.IsSelected)
             {
-                _dialogService.ShowMessageBox("警告", "未選擇帳號");
+                _dialogService.ShowMessageBox("警告", "尚未選擇帳號");
                 return;
             }
 
             var accountId = new AccountId(Accounts.SelectedItemId);
-<<<<<<< HEAD
-            var status = _taskManager.GetStatus(accountId);
-
-            switch (status)
-            {
-                case StatusEnums.Offline:
-                case StatusEnums.Starting:
-                case StatusEnums.Pausing:
-                case StatusEnums.Stopping:
-                    _dialogService.ShowMessageBox("資訊", $"帳號當前狀態為 {status}");
-                    return;
-
-                case StatusEnums.Online:
-                    _dialogService.ShowMessageBox("資訊", "帳號應該先暫停");
-                    return;
-
-                case StatusEnums.Paused:
-                    await _taskManager.SetStatus(accountId, StatusEnums.Starting);
-                    await _taskManager.Clear(accountId);
-                    await _mediator.Publish(new AccountInit(accountId));
-                    await _taskManager.SetStatus(accountId, StatusEnums.Online);
-                    return;
-            }
-=======
             var restartCommand = Locator.Current.GetService<RestartCommand>();
             await restartCommand.Execute(accountId, CancellationToken.None);
->>>>>>> upstream/main
         }
 
         public async Task LoadStatus(AccountId accountId, StatusEnums status)

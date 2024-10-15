@@ -25,7 +25,7 @@ namespace MainCore.UI.ViewModels.UserControls
         public void ChangeTribe(BuildingEnums building, TribeEnums tribe)
         {
             Items.Clear();
-            Items.Add(new(TroopEnums.None));
+            Items.Add(new TroopItem(TroopEnums.None));
             var troops = GetTroops(building, tribe);
             Items.AddRange(troops.Select(x => new TroopItem(x)));
 
@@ -35,7 +35,7 @@ namespace MainCore.UI.ViewModels.UserControls
         public void Set(TroopEnums selectedTroop, BuildingEnums building, TribeEnums tribe)
         {
             Items.Clear();
-            Items.Add(new(TroopEnums.None));
+            Items.Add(new TroopItem(TroopEnums.None));
             var troops = GetTroops(building, tribe);
             Items.AddRange(troops.Select(x => new TroopItem(x)));
             SelectedItem = Items.FirstOrDefault(x => x.Troop == selectedTroop) ?? Items[0];
@@ -47,6 +47,8 @@ namespace MainCore.UI.ViewModels.UserControls
             {
                 BuildingEnums.Barracks => GetInfantryTroops(tribe),
                 BuildingEnums.Stable => GetCavalryTroops(tribe),
+                BuildingEnums.GreatBarracks => GetInfantryTroops(tribe),
+                BuildingEnums.GreatStable => GetCavalryTroops(tribe),
                 BuildingEnums.Workshop => GetSiegeTroops(tribe),
                 _ => new List<TroopEnums>(),
             };
@@ -71,7 +73,7 @@ namespace MainCore.UI.ViewModels.UserControls
                 },
                 TribeEnums.Gauls => new()
                 {
-                   TroopEnums.Phalanx,
+                    TroopEnums.Phalanx,
                     TroopEnums.Swordsman,
                 },
                 TribeEnums.Nature => new(),

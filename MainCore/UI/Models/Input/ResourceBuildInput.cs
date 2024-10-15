@@ -2,6 +2,7 @@
 using MainCore.UI.Models.Output;
 using MainCore.UI.ViewModels.Abstract;
 using ReactiveUI;
+using System;
 using System.Collections.ObjectModel;
 
 namespace MainCore.UI.Models.Input
@@ -10,6 +11,13 @@ namespace MainCore.UI.Models.Input
     {
         public ResourceBuildInput()
         {
+            Plans = new ObservableCollection<ComboBoxItem<ResourcePlanEnums>>();
+            foreach (ResourcePlanEnums plan in Enum.GetValues(typeof(ResourcePlanEnums)))
+            {
+                var displayValue = Enum.GetName(typeof(ResourcePlanEnumsTW), (int)plan);
+                Plans.Add(new ComboBoxItem<ResourcePlanEnums>(plan, displayValue));
+            }
+
             SelectedPlan = Plans[0];
             Level = 10;
         }
@@ -19,12 +27,7 @@ namespace MainCore.UI.Models.Input
             return (SelectedPlan.Content, Level);
         }
 
-        public ObservableCollection<ComboBoxItem<ResourcePlanEnums>> Plans { get; set; } = new()
-        {
-            new ComboBoxItem<ResourcePlanEnums>(ResourcePlanEnums.AllResources, ResourcePlanEnums.AllResources.Humanize()),
-            new ComboBoxItem<ResourcePlanEnums>(ResourcePlanEnums.OnlyCrop, ResourcePlanEnums.OnlyCrop.Humanize()),
-            new ComboBoxItem<ResourcePlanEnums>(ResourcePlanEnums.ExcludeCrop, ResourcePlanEnums.ExcludeCrop.Humanize()),
-        };
+        public ObservableCollection<ComboBoxItem<ResourcePlanEnums>> Plans { get; set; }
 
         private ComboBoxItem<ResourcePlanEnums> _selectedPlan;
 

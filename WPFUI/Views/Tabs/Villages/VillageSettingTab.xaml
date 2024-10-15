@@ -43,7 +43,7 @@
                             <Label Content=" 分鐘則使用立即完成按鈕" />
                         </StackPanel>
 
-                        <CheckBox x:Name="UseSpecialUpgrade" Content="使用特殊升級方式（右側升級按鈕）" />
+                        <CheckBox x:Name="UseSpecialUpgrade" Content="使用特殊升級方式（看廣告）" />
                     </StackPanel>
                 </Border>
                 <Border Style="{DynamicResource Box}">
@@ -84,10 +84,14 @@
                         <StackPanel Orientation="Horizontal">
                             <uc:TroopSelectorUc x:Name="BarrackTroop" Text="在兵營訓練" />
                             <uc:RangeInputUc x:Name="BarrackAmount" Text="訓練" Unit="單位" Margin="10,0,0,0" />
+                            <uc:TroopSelectorUc x:Name="GreatBarrackTroop" Text="在大兵營訓練" Margin="10,0,0,0" />
+                            <uc:RangeInputUc x:Name="GreatBarrackAmount" Text="訓練" Unit="單位" Margin="10,0,0,0" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <uc:TroopSelectorUc x:Name="StableTroop" Text="在馬廄訓練" />
                             <uc:RangeInputUc x:Name="StableAmount" Text="訓練" Unit="單位" Margin="10,0,0,0" />
+                            <uc:TroopSelectorUc x:Name="GreatStableTroop" Text="在大馬廄訓練" Margin="10,0,0,0" />
+                            <uc:RangeInputUc x:Name="GreatStableAmount" Text="訓練" Unit="單位" Margin="10,0,0,0" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <uc:TroopSelectorUc x:Name="WorkshopTroop" Text="在工廠訓練" />

@@ -25,6 +25,8 @@ namespace MainCore.Commands.Features.TrainTroop
         {
             {BuildingEnums.Barracks, VillageSettingEnums.BarrackTroop },
             {BuildingEnums.Stable, VillageSettingEnums.StableTroop },
+            {BuildingEnums.GreatBarracks, VillageSettingEnums.GreatBarrackTroop },
+            {BuildingEnums.GreatStable, VillageSettingEnums.GreatStableTroop },
             {BuildingEnums.Workshop, VillageSettingEnums.WorkshopTroop },
         };
 
@@ -32,6 +34,8 @@ namespace MainCore.Commands.Features.TrainTroop
         {
             {BuildingEnums.Barracks, (VillageSettingEnums.BarrackAmountMin,VillageSettingEnums.BarrackAmountMax )},
             {BuildingEnums.Stable, (VillageSettingEnums.StableAmountMin,VillageSettingEnums.StableAmountMax ) },
+            {BuildingEnums.GreatBarracks, (VillageSettingEnums.GreatBarrackAmountMin,VillageSettingEnums.GreatBarrackAmountMax )},
+            {BuildingEnums.GreatStable, (VillageSettingEnums.GreatStableAmountMin,VillageSettingEnums.GreatStableAmountMax ) },
             {BuildingEnums.Workshop, (VillageSettingEnums.WorkshopAmountMin,VillageSettingEnums.WorkshopAmountMax ) },
         };
 

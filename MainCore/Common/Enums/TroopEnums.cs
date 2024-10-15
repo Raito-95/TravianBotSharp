@@ -98,7 +98,7 @@
         //Hero
         Hero
     }
-    public enum TroopEnumsChinese
+    public enum TroopEnumsTW
     {
         無,
 

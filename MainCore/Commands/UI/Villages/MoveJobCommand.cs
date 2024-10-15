@@ -16,15 +16,6 @@ namespace MainCore.Commands.UI.Villages
 
         public async Task Execute(AccountId accountId, VillageId villageId, ListBoxItemViewModel jobs, MoveEnums move)
         {
-<<<<<<< HEAD:MainCore/Commands/UI/Build/MoveJobCommand.cs
-            var status = _taskManager.GetStatus(accountId);
-            if (status == StatusEnums.Online)
-            {
-                _dialogService.ShowMessageBox("警告", "請暫停帳號後再修改建築佇列");
-                return;
-            }
-=======
->>>>>>> upstream/main:MainCore/Commands/UI/Villages/MoveJobCommand.cs
             if (!jobs.IsSelected) return;
 
             var oldIndex = jobs.SelectedIndex;

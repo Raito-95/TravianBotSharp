@@ -1,8 +1,6 @@
 ﻿using ReactiveUI;
 using System.Collections.Immutable;
 using System.Drawing;
-using MainCore.Common.Enums;
-using MainCore.UI.ViewModels.Tabs.Villages;
 
 namespace MainCore.UI.Models.Output
 {
@@ -35,6 +33,11 @@ namespace MainCore.UI.Models.Output
 
         public string ImageSource => GetImageSource(Tribe);
         public static Rectangle ImageMask => new(0, 0, 61, 61);
-        public string ChineseName => BuildViewModel.GetNameInChinese(Tribe);
+        public string DisplayName => GetTribeDisplayName(Tribe);
+
+        private static string GetTribeDisplayName(TribeEnums tribe)
+        {
+            return Enum.GetName(typeof(TribeEnumsTW), (int)tribe) ?? tribe.ToString();
+        }
     }
 }

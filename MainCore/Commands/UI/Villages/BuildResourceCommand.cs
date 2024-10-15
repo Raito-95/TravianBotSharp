@@ -23,7 +23,7 @@ namespace MainCore.Commands.UI.Villages
             var result = await _resourceBuildInputValidator.ValidateAsync(resourceBuildInput);
             if (!result.IsValid)
             {
-                _dialogService.ShowMessageBox("Error", result.ToString());
+                _dialogService.ShowMessageBox("錯誤", result.ToString());
                 return;
             }
 

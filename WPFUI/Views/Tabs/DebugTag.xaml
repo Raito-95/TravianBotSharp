@@ -24,7 +24,7 @@
                 <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="1*" />
             </Grid.ColumnDefinitions>
-            <Button x:Name="ReportButton"           Grid.Row="0" Grid.Column="0" Content="請Vinaghost喝杯咖啡" Margin="10" />
+            <Button x:Name="ReportButton"           Grid.Row="0" Grid.Column="0" Content="請 Vinaghost 喝杯咖啡" Margin="10" />
             <Button x:Name="LogButton"              Grid.Row="0" Grid.Column="1" Content="打開日誌資料夾"            Margin="10" />
 
             <Label x:Name="TaskTableLabel"          Grid.Row="1" Grid.Column="0" Content="任務表"   HorizontalContentAlignment="Center" />

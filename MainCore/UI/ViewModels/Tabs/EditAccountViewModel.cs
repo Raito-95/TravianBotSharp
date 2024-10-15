@@ -57,18 +57,7 @@ namespace MainCore.UI.ViewModels.Tabs
                 return;
             }
 
-<<<<<<< HEAD
-            if (AccountInput.Accesses.Count == 0)
-            {
-                AccountInput.Accesses.Add(AccessInput.Clone());
-            }
-            else
-            {
-                _dialogService.ShowMessageBox("錯誤", "由於新規則，僅允許一次訪問。請查看TBS的Discord。");
-            }
-=======
             AccountInput.Accesses.Add(AccessInput.Clone());
->>>>>>> upstream/main
         }
 
         private void EditAccessHandler()
@@ -91,30 +80,9 @@ namespace MainCore.UI.ViewModels.Tabs
 
         private async Task EditAccountHandler()
         {
-<<<<<<< HEAD
-            var results = await _accountInputValidator.ValidateAsync(AccountInput);
-
-            if (!results.IsValid)
-            {
-                _dialogService.ShowMessageBox("錯誤", results.ToString());
-                return;
-            }
-
-            await _waitingOverlayViewModel.Show("編輯帳號中");
-
-            var dto = AccountInput.ToDto();
-            Update(dto);
-            await _mediator.Publish(new AccountUpdated());
-            await LoadAccount.Execute();
-
-            await _waitingOverlayViewModel.Hide();
-
-            _dialogService.ShowMessageBox("資訊", "帳號已編輯");
-=======
             var updateAccountCommand = Locator.Current.GetService<UpdateAccountCommand>();
             await updateAccountCommand.Execute(AccountInput, default);
             await LoadAccount.Execute();
->>>>>>> upstream/main
         }
 
         private AccountDto LoadAccountHandler(AccountId accountId)

@@ -47,12 +47,13 @@ namespace MainCore.Commands.Queries
                 case JobTypeEnums.NormalBuild:
                     {
                         var plan = JsonSerializer.Deserialize<NormalBuildPlan>(job.Content);
-                        return $"Build {plan.Type.Humanize()} to level {plan.Level} at location {plan.Location}";
+                        var twType = (BuildingEnumsTW)plan.Type;
+                        return $"在位置 {plan.Location} 建造 {twType.Humanize()} 到等級 {plan.Level}";
                     }
                 case JobTypeEnums.ResourceBuild:
                     {
                         var plan = JsonSerializer.Deserialize<ResourceBuildPlan>(job.Content);
-                        return $"Build {plan.Plan.Humanize()} to level {plan.Level}";
+                        return $"將 {plan.Plan.Humanize()} 升級到等級 {plan.Level}";
                     }
                 default:
                     return job.Content;

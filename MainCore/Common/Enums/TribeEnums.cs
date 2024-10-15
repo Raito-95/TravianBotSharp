@@ -11,7 +11,7 @@
         Egyptians,
         Huns,
     }
-    public enum TribeEnumsChinese
+        public enum TribeEnumsTW
     {
         任何 = 0,
         羅馬人,

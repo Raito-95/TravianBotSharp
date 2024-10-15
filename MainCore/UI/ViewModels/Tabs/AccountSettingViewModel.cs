@@ -44,22 +44,8 @@ namespace MainCore.UI.ViewModels.Tabs
 
         private async Task SaveHandler()
         {
-<<<<<<< HEAD
-            var result = await _accountsettingInputValidator.ValidateAsync(AccountSettingInput);
-            if (!result.IsValid)
-            {
-                _dialogService.ShowMessageBox("錯誤", result.ToString());
-                return;
-            }
-
-            var settings = AccountSettingInput.Get();
-            new SetSettingCommand().Execute(AccountId, settings);
-            await _mediator.Publish(new AccountSettingUpdated(AccountId));
-            _dialogService.ShowMessageBox("資訊", message: "設定已儲存");
-=======
             var saveSettingCommand = Locator.Current.GetService<SaveSettingCommand>();
             await saveSettingCommand.Execute(AccountId, AccountSettingInput, CancellationToken.None);
->>>>>>> upstream/main
         }
 
         private async Task ImportHandler()
@@ -78,23 +64,8 @@ namespace MainCore.UI.ViewModels.Tabs
             }
 
             AccountSettingInput.Set(settings);
-<<<<<<< HEAD
-            var result = await _accountsettingInputValidator.ValidateAsync(AccountSettingInput);
-            if (!result.IsValid)
-            {
-                _dialogService.ShowMessageBox("錯誤", result.ToString());
-                return;
-            }
-
-            settings = AccountSettingInput.Get();
-            new SetSettingCommand().Execute(AccountId, settings);
-            await _mediator.Publish(new AccountSettingUpdated(AccountId));
-
-            _dialogService.ShowMessageBox("資訊", "設定已匯入");
-=======
             var saveSettingCommand = Locator.Current.GetService<SaveSettingCommand>();
             await saveSettingCommand.Execute(AccountId, AccountSettingInput, CancellationToken.None);
->>>>>>> upstream/main
         }
 
         private async Task ExportHandler()
@@ -107,7 +78,7 @@ namespace MainCore.UI.ViewModels.Tabs
 
             var jsonString = JsonSerializer.Serialize(settings);
             await File.WriteAllTextAsync(path, jsonString);
-            _dialogService.ShowMessageBox("資訊", "設定已匯出");
+            _dialogService.ShowMessageBox("訊息", "設定已匯出");
         }
 
         private static Dictionary<AccountSettingEnums, int> LoadSettingsHandler(AccountId accountId)

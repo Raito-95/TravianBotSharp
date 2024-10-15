@@ -24,16 +24,6 @@ namespace MainCore.Commands.UI.Villages
 
         public async Task Execute(AccountId accountId, VillageId villageId, NormalBuildInput normalBuildInput, int location)
         {
-<<<<<<< HEAD:MainCore/Commands/UI/Build/BuildNormalCommand.cs
-            var status = _taskManager.GetStatus(accountId);
-            if (status == StatusEnums.Online)
-            {
-                _dialogService.ShowMessageBox("警告", "請暫停帳號後再修改建築佇列");
-                return;
-            }
-
-=======
->>>>>>> upstream/main:MainCore/Commands/UI/Villages/BuildNormalCommand.cs
             var result = await _normalBuildInputValidator.ValidateAsync(normalBuildInput);
             if (!result.IsValid)
             {

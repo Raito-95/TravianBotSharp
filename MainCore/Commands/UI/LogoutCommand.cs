@@ -20,13 +20,13 @@
             switch (status)
             {
                 case StatusEnums.Offline:
-                    _dialogService.ShowMessageBox("Warning", "Account's browser is already closed");
+                    _dialogService.ShowMessageBox("警告", "帳號的瀏覽器已經關閉");
                     return;
 
                 case StatusEnums.Starting:
                 case StatusEnums.Pausing:
                 case StatusEnums.Stopping:
-                    _dialogService.ShowMessageBox("Warning", $"TBS is {status}. Please waiting");
+                    _dialogService.ShowMessageBox("警告", $"TBS 正在 {status} 中，請稍候");
                     return;
 
                 case StatusEnums.Online:

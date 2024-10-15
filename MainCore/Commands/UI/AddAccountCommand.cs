@@ -25,17 +25,17 @@ namespace MainCore.Commands.UI
 
             if (!results.IsValid)
             {
-                _dialogService.ShowMessageBox("Error", results.ToString());
+                _dialogService.ShowMessageBox("錯誤", results.ToString());
                 return Result.Ok();
             }
 
-            await _waitingOverlayViewModel.Show("adding account");
+            await _waitingOverlayViewModel.Show("正在新增帳號");
 
             var dto = accountInput.ToDto();
 
             if (IsExist(dto))
             {
-                _dialogService.ShowMessageBox("Information", "Account is duplicated");
+                _dialogService.ShowMessageBox("訊息", "帳號已經存在");
                 await _waitingOverlayViewModel.Hide();
                 return Result.Ok();
             }
@@ -43,7 +43,7 @@ namespace MainCore.Commands.UI
             Add(dto);
 
             await _mediator.Publish(new AccountUpdated(), cancellationToken);
-            _dialogService.ShowMessageBox("Information", "Added account");
+            _dialogService.ShowMessageBox("訊息", "已新增帳號");
             await _waitingOverlayViewModel.Hide();
 
             return Result.Ok();
@@ -51,20 +51,20 @@ namespace MainCore.Commands.UI
 
         public async Task<Result> Execute(List<AccountDetailDto> accountDetails, CancellationToken cancellationToken)
         {
-            await _waitingOverlayViewModel.Show("adding accounts");
+            await _waitingOverlayViewModel.Show("正在新增多個帳號");
 
             var dtos = IsExist(accountDetails);
 
             if (dtos.Count == 0)
             {
-                _dialogService.ShowMessageBox("Information", "All accounts are duplicated");
+                _dialogService.ShowMessageBox("訊息", "所有帳號已重複");
                 await _waitingOverlayViewModel.Hide();
                 return Result.Ok();
             }
             dtos.ForEach(Add);
 
             await _mediator.Publish(new AccountUpdated(), cancellationToken);
-            _dialogService.ShowMessageBox("Information", $"Added {dtos.Count} accounts");
+            _dialogService.ShowMessageBox("訊息", $"已新增 {dtos.Count} 個帳號");
             await _waitingOverlayViewModel.Hide();
             return Result.Ok();
         }

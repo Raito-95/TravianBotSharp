@@ -1,8 +1,6 @@
 ﻿using ReactiveUI;
 using System.Collections.Immutable;
 using System.Drawing;
-using MainCore.Common.Enums;
-using MainCore.UI.ViewModels.Tabs.Villages;
 
 namespace MainCore.UI.Models.Output
 {
@@ -38,6 +36,13 @@ namespace MainCore.UI.Models.Output
             Troop = troop;
         }
 
+        public string DisplayName => GetTroopDisplayName(Troop);
+
+        private static string GetTroopDisplayName(TroopEnums troop)
+        {
+            return Enum.GetName(typeof(TroopEnumsTW), (int)troop) ?? troop.ToString();
+        }
+
         public static string GetImageSource(TroopEnums troop)
         {
             const string url = "pack://application:,,,/Resources/";
@@ -52,7 +57,7 @@ namespace MainCore.UI.Models.Output
         }
 
         public TroopEnums Troop { get; }
-        public string ChineseName => BuildViewModel.GetNameInChinese(Troop);
+
         public string ImageSource => GetImageSource(Troop);
         public Rectangle ImageMask => GetImageMask(Troop);
     }

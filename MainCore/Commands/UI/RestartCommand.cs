@@ -24,11 +24,11 @@
                 case StatusEnums.Starting:
                 case StatusEnums.Pausing:
                 case StatusEnums.Stopping:
-                    _dialogService.ShowMessageBox("Information", $"Account is {status}");
+                    _dialogService.ShowMessageBox("訊息", $"帳號當前狀態為 {status}");
                     return;
 
                 case StatusEnums.Online:
-                    _dialogService.ShowMessageBox("Information", $"Account should be paused first");
+                    _dialogService.ShowMessageBox("訊息", "帳號應先暫停");
                     return;
 
                 case StatusEnums.Paused:

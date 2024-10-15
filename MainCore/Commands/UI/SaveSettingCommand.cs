@@ -28,7 +28,7 @@ namespace MainCore.Commands.UI
             var result = await _accountsettingInputValidator.ValidateAsync(accountSettingInput, cancellationToken);
             if (!result.IsValid)
             {
-                _dialogService.ShowMessageBox("Error", result.ToString());
+                _dialogService.ShowMessageBox("錯誤", result.ToString());
                 return;
             }
 
@@ -36,7 +36,7 @@ namespace MainCore.Commands.UI
             Execute(accountId, settings);
 
             await _mediator.Publish(new AccountSettingUpdated(accountId), cancellationToken);
-            _dialogService.ShowMessageBox("Information", message: "Settings saved");
+            _dialogService.ShowMessageBox("訊息", "設定已儲存");
         }
 
         public async Task Execute(AccountId accountId, FarmListSettingInput farmListSettingInput, CancellationToken cancellationToken)
@@ -44,7 +44,7 @@ namespace MainCore.Commands.UI
             var result = await _farmListSettingInputValidator.ValidateAsync(farmListSettingInput);
             if (!result.IsValid)
             {
-                _dialogService.ShowMessageBox("Error", result.ToString());
+                _dialogService.ShowMessageBox("錯誤", result.ToString());
                 return;
             }
 
@@ -52,7 +52,7 @@ namespace MainCore.Commands.UI
             Execute(accountId, settings);
 
             await _mediator.Publish(new AccountSettingUpdated(accountId));
-            _dialogService.ShowMessageBox("Information", "Settings saved");
+            _dialogService.ShowMessageBox("訊息", "設定已儲存");
         }
 
         public async Task Execute(AccountId accountId, VillageId villageId, VillageSettingInput villageSettingInput, CancellationToken cancellationToken)
@@ -60,7 +60,7 @@ namespace MainCore.Commands.UI
             var result = await _villageSettingInputValidator.ValidateAsync(villageSettingInput, cancellationToken);
             if (!result.IsValid)
             {
-                _dialogService.ShowMessageBox("Error", result.ToString());
+                _dialogService.ShowMessageBox("錯誤", result.ToString());
                 return;
             }
 
@@ -68,7 +68,7 @@ namespace MainCore.Commands.UI
             Execute(villageId, settings);
 
             await _mediator.Publish(new VillageSettingUpdated(accountId, villageId), cancellationToken);
-            _dialogService.ShowMessageBox("Information", "Settings saved");
+            _dialogService.ShowMessageBox("訊息", "設定已儲存");
         }
 
         public async Task Execute(AccountId accountId, VillageId villageId, Dictionary<VillageSettingEnums, int> settings, CancellationToken cancellationToken)
@@ -76,7 +76,7 @@ namespace MainCore.Commands.UI
             Execute(villageId, settings);
 
             await _mediator.Publish(new VillageSettingUpdated(accountId, villageId), cancellationToken);
-            _dialogService.ShowMessageBox("Information", "Settings saved");
+            _dialogService.ShowMessageBox("訊息", "設定已儲存");
         }
 
         private void Execute(AccountId accountId, Dictionary<AccountSettingEnums, int> settings)

@@ -5,15 +5,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:conv="clr-namespace:WPFUI.Converter"
+    xmlns:local="clr-namespace:WPFUI.Views.Tabs.Villages"
     mc:Ignorable="d"
     d:DesignHeight="450" d:DesignWidth="800"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
-
-    <v:BuildTabBase.Resources>
-        <conv:BuildingNameConverter x:Key="BuildingNameConverter"/>
-    </v:BuildTabBase.Resources>
-
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -69,22 +64,12 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Label Grid.Row="0" Grid.Column="0" Content="建築" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                    <ComboBox x:Name="NormalBuildings" 
-                            Grid.Row="0" 
-                            Grid.Column="1" 
-                            VerticalAlignment="Center"  
-                            HorizontalAlignment="Stretch">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Name, Converter={StaticResource BuildingNameConverter}}" />
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
+                    <ComboBox x:Name="NormalBuildings" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center"  HorizontalAlignment="Stretch" DisplayMemberPath="Name" />
 
                     <Label Grid.Row="1" Grid.Column="0" Content="等級"  VerticalAlignment="Center" HorizontalAlignment="Center" />
                     <TextBox x:Name="NormalLevel" Grid.Row="1"  Grid.Column="1" />
                     <Button x:Name="NormalBuild" Grid.Row="3" Grid.ColumnSpan="2" Style="{DynamicResource MaterialDesignFloatingActionMiniDarkButton}" ToolTip="建造">
-                        <materialDesign:PackIcon Width="20" Height="20" Kind="Hammer" />
+                        <materialDesign:PackIcon Width="30" Height="30" Kind="Hammer" />
                     </Button>
                 </Grid>
             </Border>
@@ -101,23 +86,12 @@
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <ComboBox x:Name="ResType"
-                            Grid.Row="0"
-                            Grid.ColumnSpan="2"
-                            VerticalAlignment="Center"
-                            HorizontalAlignment="Stretch"
-                            SelectedIndex="0">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Name, Converter={StaticResource BuildingNameConverter}}" />
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
+                    <ComboBox x:Name="ResType" Grid.Row="0" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Stretch" DisplayMemberPath="Name" SelectedIndex="0" />
 
                     <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Content="等級" />
                     <TextBox x:Name="ResourceLevel" Grid.Row="1"  Grid.Column="1" />
                     <Button x:Name="ResourceBuild" Grid.Row="3" Grid.ColumnSpan="2" Style="{DynamicResource MaterialDesignFloatingActionMiniDarkButton}" ToolTip="建造">
-                        <materialDesign:PackIcon Width="20" Height="20" Kind="Hammer" />
+                        <materialDesign:PackIcon Width="30" Height="30" Kind="Hammer" />
                     </Button>
                 </Grid>
             </Border>
@@ -133,8 +107,8 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <Button x:Name="ImportButton" Grid.Column="0" Content="匯入" Margin="5" />
-                <Button x:Name="ExportButton" Grid.Column="1" Content="匯出" Margin="5" />
+                <Button x:Name="ImportButton"       Grid.Column="0" Content="匯入" Margin="5" />
+                <Button x:Name="ExportButton"       Grid.Column="1" Content="匯出" Margin="5" />
             </Grid>
             <Border Grid.Row="1" Style="{DynamicResource Box}">
                 <ListBox x:Name="JobsGrid" SelectionMode="Single" ItemTemplate="{DynamicResource ListBoxColorItem}">
@@ -165,7 +139,7 @@
                                     <materialDesign:PackIcon Width="{DynamicResource IconSize}" Height="{DynamicResource IconSize}" Kind="Delete" />
                                 </MenuItem.Icon>
                             </MenuItem>
-                            <MenuItem x:Name="DeleteAllButton" Header="刪除所有">
+                            <MenuItem x:Name="DeleteAllButton" Header="全部刪除">
                                 <MenuItem.Icon>
                                     <materialDesign:PackIcon Width="{DynamicResource IconSize}" Height="{DynamicResource IconSize}" Kind="DeleteForever" />
                                 </MenuItem.Icon>

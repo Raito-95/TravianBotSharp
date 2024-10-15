@@ -44,22 +44,8 @@ namespace MainCore.UI.ViewModels.Tabs.Villages
 
         private async Task SaveHandler()
         {
-<<<<<<< HEAD
-            var result = await _villageSettingInputValidator.ValidateAsync(VillageSettingInput);
-            if (!result.IsValid)
-            {
-                _dialogService.ShowMessageBox("錯誤", result.ToString());
-                return;
-            }
-            var settings = VillageSettingInput.Get();
-            new SetSettingCommand().Execute(VillageId, settings);
-            await _mediator.Publish(new VillageSettingUpdated(AccountId, VillageId));
-
-            _dialogService.ShowMessageBox("資訊", "設定已儲存");
-=======
             var saveSettingCommand = Locator.Current.GetService<SaveSettingCommand>();
             await saveSettingCommand.Execute(AccountId, VillageId, VillageSettingInput, CancellationToken.None);
->>>>>>> upstream/main
         }
 
         private async Task ImportHandler()
@@ -73,27 +59,13 @@ namespace MainCore.UI.ViewModels.Tabs.Villages
             }
             catch
             {
-                _dialogService.ShowMessageBox("警告", "檔案無效");
+                _dialogService.ShowMessageBox("警告", "無效的檔案。");
                 return;
             }
 
             VillageSettingInput.Set(settings);
-<<<<<<< HEAD
-            var result = await _villageSettingInputValidator.ValidateAsync(VillageSettingInput);
-            if (!result.IsValid)
-            {
-                _dialogService.ShowMessageBox("錯誤", result.ToString());
-                return;
-            }
-            settings = VillageSettingInput.Get();
-            new SetSettingCommand().Execute(VillageId, settings);
-            await _mediator.Publish(new VillageSettingUpdated(AccountId, VillageId));
-
-            _dialogService.ShowMessageBox("資訊", "設定已匯入");
-=======
             var saveSettingCommand = Locator.Current.GetService<SaveSettingCommand>();
             await saveSettingCommand.Execute(AccountId, VillageId, VillageSettingInput, CancellationToken.None);
->>>>>>> upstream/main
         }
 
         private async Task ExportHandler()
@@ -104,7 +76,7 @@ namespace MainCore.UI.ViewModels.Tabs.Villages
             var settings = getSetting.Get(VillageId);
             var jsonString = JsonSerializer.Serialize(settings);
             await File.WriteAllTextAsync(path, jsonString);
-            _dialogService.ShowMessageBox("資訊", "設定已匯出");
+            _dialogService.ShowMessageBox("訊息", "設定已匯出");
         }
 
         private static Dictionary<VillageSettingEnums, int> LoadSettingHandler(VillageId villageId)

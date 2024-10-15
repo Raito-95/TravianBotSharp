@@ -21,7 +21,7 @@
             var status = _taskManager.GetStatus(accountId);
             if (status != StatusEnums.Offline)
             {
-                _dialogService.ShowMessageBox("Warning", "Account should be offline");
+                _dialogService.ShowMessageBox("警告", "帳號必須處於離線狀態");
                 return;
             }
 

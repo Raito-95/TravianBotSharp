@@ -49,20 +49,8 @@ namespace MainCore.UI.ViewModels.Tabs
 
         private async Task AddAccountHandler()
         {
-<<<<<<< HEAD
-            await _waitingOverlayViewModel.Show("新增帳號中");
-
-            Add(Accounts.ToList());
-
-            await _mediator.Publish(new AccountUpdated());
-
-            await _waitingOverlayViewModel.Hide();
-
-            _dialogService.ShowMessageBox("資訊", "帳號已新增");
-=======
             var addAccountCommand = Locator.Current.GetService<AddAccountCommand>();
             await addAccountCommand.Execute([.. Accounts], default);
->>>>>>> upstream/main
         }
 
         private static List<AccountDetailDto> ParseHandler(string input)
