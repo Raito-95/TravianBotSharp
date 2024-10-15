@@ -1,34 +1,40 @@
 ﻿using MainCore.Commands.Features.StartFarmList;
 using MainCore.Tasks.Base;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace MainCore.Tasks
 {
-    [RegisterTransient(Registration = RegistrationStrategy.Self)]
+    [RegisterTransient<StartFarmListTask>]
     public class StartFarmListTask : AccountTask
     {
         private readonly ITaskManager _taskManager;
+        private readonly IGetSetting _getSetting;
 
-        public StartFarmListTask(ITaskManager taskManager)
+        public StartFarmListTask(ITaskManager taskManager, IGetSetting getSetting)
         {
             _taskManager = taskManager;
+            _getSetting = getSetting;
         }
 
-        protected override async Task<Result> Execute()
+        protected override async Task<Result> Execute(IServiceScope scoped, CancellationToken cancellationToken)
         {
             Result result;
 
-            result = await new ToFarmListPageCommand().Execute(_chromeBrowser, AccountId, CancellationToken);
+            var toFarmListPageCommand = scoped.ServiceProvider.GetRequiredService<ToFarmListPageCommand>();
+            result = await toFarmListPageCommand.Execute(cancellationToken);
             if (result.IsFailed) return result.WithError(TraceMessage.Error(TraceMessage.Line()));
 
-            var useStartAllButton = new GetSetting().BooleanByName(AccountId, AccountSettingEnums.UseStartAllButton);
+            var useStartAllButton = _getSetting.BooleanByName(AccountId, AccountSettingEnums.UseStartAllButton);
             if (useStartAllButton)
             {
-                result = await new StartAllFarmListCommand().Execute(_chromeBrowser);
+                var startAllFarmListCommand = scoped.ServiceProvider.GetRequiredService<StartAllFarmListCommand>();
+                result = await startAllFarmListCommand.Execute(cancellationToken);
                 if (result.IsFailed) return result.WithError(TraceMessage.Error(TraceMessage.Line()));
             }
             else
             {
-                result = await new StartActiveFarmListCommand().Execute(_chromeBrowser, AccountId);
+                var startActiveFarmListCommand = scoped.ServiceProvider.GetRequiredService<StartActiveFarmListCommand>();
+                result = await startActiveFarmListCommand.Execute(cancellationToken);
                 if (result.IsFailed) return result.WithError(TraceMessage.Error(TraceMessage.Line()));
             }
             await SetNextExecute();
@@ -37,14 +43,11 @@ namespace MainCore.Tasks
 
         private async Task SetNextExecute()
         {
-            var seconds = new GetSetting().ByName(AccountId, AccountSettingEnums.FarmIntervalMin, AccountSettingEnums.FarmIntervalMax);
+            var seconds = _getSetting.ByName(AccountId, AccountSettingEnums.FarmIntervalMin, AccountSettingEnums.FarmIntervalMax);
             ExecuteAt = DateTime.Now.AddSeconds(seconds);
             await _taskManager.ReOrder(AccountId);
         }
 
-        protected override void SetName()
-        {
-            _name = "Start farm list";
-        }
+        protected override string TaskName => "Start farm list";
     }
 }

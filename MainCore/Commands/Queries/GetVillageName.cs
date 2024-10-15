@@ -1,9 +1,10 @@
-﻿namespace MainCore.Commands.Queries
-{
-    public class GetVillageName(IDbContextFactory<AppDbContext> contextFactory = null)
-    {
-        private readonly IDbContextFactory<AppDbContext> _contextFactory = contextFactory ?? Locator.Current.GetService<IDbContextFactory<AppDbContext>>();
+﻿using MainCore.Commands.Abstract;
 
+namespace MainCore.Commands.Queries
+{
+    [RegisterSingleton<GetVillageName>]
+    public class GetVillageName(IDbContextFactory<AppDbContext> contextFactory) : QueryBase(contextFactory)
+    {
         public string Execute(VillageId villageId)
         {
             using var context = _contextFactory.CreateDbContext();

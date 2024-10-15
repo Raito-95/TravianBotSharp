@@ -1,9 +1,14 @@
-﻿namespace MainCore.Commands.Navigate
+﻿using MainCore.Commands.Abstract;
+
+namespace MainCore.Commands.Navigate
 {
-    public class ToDorfCommand
+    [RegisterScoped<ToDorfCommand>]
+    public class ToDorfCommand(IDataService dataService) : CommandBase(dataService), ICommand<int>
     {
-        public async Task<Result> Execute(IChromeBrowser chromeBrowser, int dorf, bool forceReload, CancellationToken cancellationToken)
+        public async Task<Result> Execute(int dorf, CancellationToken cancellationToken)
         {
+            var chromeBrowser = _dataService.ChromeBrowser;
+
             var currentUrl = chromeBrowser.CurrentUrl;
             var currentDorf = GetCurrentDorf(currentUrl);
             if (dorf == 0)
@@ -12,14 +17,14 @@
                 else dorf = currentDorf;
             }
 
-            if (currentDorf != 0 && dorf == currentDorf && !forceReload)
+            if (currentDorf != 0 && dorf == currentDorf)
             {
                 return Result.Ok();
             }
 
             var html = chromeBrowser.Html;
 
-            var button = GetDorfButton(html, dorf);
+            var button = NavigationBarParser.GetDorfButton(html, dorf);
             if (button is null) return Retry.ButtonNotFound($"dorf{dorf}");
 
             Result result;
@@ -34,27 +39,5 @@
             if (url.Contains("dorf2")) return 2;
             return 0;
         }
-
-        private static HtmlNode GetDorfButton(HtmlDocument doc, int dorf)
-        {
-            return dorf switch
-            {
-                1 => GetResourceButton(doc),
-                2 => GetBuildingButton(doc),
-                _ => null,
-            };
-        }
-
-        private static HtmlNode GetButton(HtmlDocument doc, int key)
-        {
-            var navigationBar = doc.GetElementbyId("navigation");
-            if (navigationBar is null) return null;
-            var buttonNode = navigationBar.Descendants("a").FirstOrDefault(x => x.GetAttributeValue("accesskey", 0) == key);
-            return buttonNode;
-        }
-
-        private static HtmlNode GetResourceButton(HtmlDocument doc) => GetButton(doc, 1);
-
-        private static HtmlNode GetBuildingButton(HtmlDocument doc) => GetButton(doc, 2);
     }
 }

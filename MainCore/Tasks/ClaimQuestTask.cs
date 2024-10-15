@@ -1,29 +1,26 @@
 ﻿using MainCore.Commands.Features.ClaimQuest;
 using MainCore.Tasks.Base;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace MainCore.Tasks
 {
-    [RegisterTransient(Registration = RegistrationStrategy.Self)]
+    [RegisterTransient<ClaimQuestTask>]
     public class ClaimQuestTask : VillageTask
     {
-        protected override async Task<Result> Execute()
+        protected override async Task<Result> Execute(IServiceScope scoped, CancellationToken cancellationToken)
         {
             Result result;
-
-            result = await new ToQuestPageCommand().Execute(_chromeBrowser, CancellationToken);
+            var toQuestPageCommand = scoped.ServiceProvider.GetRequiredService<ToQuestPageCommand>();
+            result = await toQuestPageCommand.Execute(cancellationToken);
             if (result.IsFailed) return result.WithError(TraceMessage.Error(TraceMessage.Line()));
 
-            result = await new ClaimQuestCommand().Execute(AccountId, _chromeBrowser, CancellationToken);
+            var claimQuestCommand = scoped.ServiceProvider.GetRequiredService<ClaimQuestCommand>();
+            result = await claimQuestCommand.Execute(cancellationToken);
             if (result.IsFailed) return result.WithError(TraceMessage.Error(TraceMessage.Line()));
 
-            await _mediator.Publish(new StorageUpdated(AccountId, VillageId), CancellationToken);
             return Result.Ok();
         }
 
-        protected override void SetName()
-        {
-            var village = new GetVillageName().Execute(VillageId);
-            _name = $"Claim quest in {village}";
-        }
+        protected override string TaskName => "Claim quest";
     }
 }

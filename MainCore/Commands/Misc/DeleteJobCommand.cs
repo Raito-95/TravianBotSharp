@@ -1,14 +1,10 @@
-﻿namespace MainCore.Commands.Misc
+﻿using MainCore.Commands.Abstract;
+
+namespace MainCore.Commands.Misc
 {
-    public class DeleteJobCommand
+    [RegisterSingleton<DeleteJobCommand>]
+    public class DeleteJobCommand(IDbContextFactory<AppDbContext> contextFactory) : QueryBase(contextFactory)
     {
-        private readonly IDbContextFactory<AppDbContext> _contextFactory;
-
-        public DeleteJobCommand(IDbContextFactory<AppDbContext> contextFactory = null)
-        {
-            _contextFactory = contextFactory ?? Locator.Current.GetService<IDbContextFactory<AppDbContext>>();
-        }
-
         public void ByJobId(JobId jobId)
         {
             using var context = _contextFactory.CreateDbContext();
@@ -32,6 +28,15 @@
                 .Where(x => x.VillageId == job.VillageId)
                 .Where(x => x.Position > job.Position)
                 .ExecuteUpdate(x => x.SetProperty(x => x.Position, x => x.Position - 1));
+        }
+
+        public void ByVillageId(VillageId villageId)
+        {
+            using var context = _contextFactory.CreateDbContext();
+
+            context.Jobs
+                .Where(x => x.VillageId == villageId.Value)
+                .ExecuteDelete();
         }
     }
 }

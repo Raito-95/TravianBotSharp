@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+﻿using MainCore.Commands.UI;
 using MainCore.UI.Models.Input;
 using MainCore.UI.ViewModels.Abstract;
 using ReactiveUI;
@@ -7,23 +7,19 @@ using System.Text.Json;
 
 namespace MainCore.UI.ViewModels.Tabs.Villages
 {
-    [RegisterSingleton(Registration = RegistrationStrategy.Self)]
+    [RegisterSingleton<VillageSettingViewModel>]
     public class VillageSettingViewModel : VillageTabViewModelBase
     {
         public VillageSettingInput VillageSettingInput { get; } = new();
 
-        private readonly IValidator<VillageSettingInput> _villageSettingInputValidator;
         private readonly IDialogService _dialogService;
-        private readonly IMediator _mediator;
         public ReactiveCommand<Unit, Unit> SaveCommand { get; }
         public ReactiveCommand<Unit, Unit> ExportCommand { get; }
         public ReactiveCommand<Unit, Unit> ImportCommand { get; }
         public ReactiveCommand<VillageId, Dictionary<VillageSettingEnums, int>> LoadSetting { get; }
 
-        public VillageSettingViewModel(IMediator mediator, IValidator<VillageSettingInput> villageSettingInputValidator, IDialogService dialogService)
+        public VillageSettingViewModel(IDialogService dialogService)
         {
-            _mediator = mediator;
-            _villageSettingInputValidator = villageSettingInputValidator;
             _dialogService = dialogService;
 
             SaveCommand = ReactiveCommand.CreateFromTask(SaveHandler);
@@ -31,7 +27,7 @@ namespace MainCore.UI.ViewModels.Tabs.Villages
             ImportCommand = ReactiveCommand.CreateFromTask(ImportHandler);
             LoadSetting = ReactiveCommand.Create<VillageId, Dictionary<VillageSettingEnums, int>>(LoadSettingHandler);
 
-            LoadSetting.Subscribe(settings => VillageSettingInput.Set(settings));
+            LoadSetting.Subscribe(VillageSettingInput.Set);
         }
 
         public async Task SettingRefresh(VillageId villageId)
@@ -48,6 +44,7 @@ namespace MainCore.UI.ViewModels.Tabs.Villages
 
         private async Task SaveHandler()
         {
+<<<<<<< HEAD
             var result = await _villageSettingInputValidator.ValidateAsync(VillageSettingInput);
             if (!result.IsValid)
             {
@@ -59,6 +56,10 @@ namespace MainCore.UI.ViewModels.Tabs.Villages
             await _mediator.Publish(new VillageSettingUpdated(AccountId, VillageId));
 
             _dialogService.ShowMessageBox("資訊", "設定已儲存");
+=======
+            var saveSettingCommand = Locator.Current.GetService<SaveSettingCommand>();
+            await saveSettingCommand.Execute(AccountId, VillageId, VillageSettingInput, CancellationToken.None);
+>>>>>>> upstream/main
         }
 
         private async Task ImportHandler()
@@ -77,6 +78,7 @@ namespace MainCore.UI.ViewModels.Tabs.Villages
             }
 
             VillageSettingInput.Set(settings);
+<<<<<<< HEAD
             var result = await _villageSettingInputValidator.ValidateAsync(VillageSettingInput);
             if (!result.IsValid)
             {
@@ -88,13 +90,18 @@ namespace MainCore.UI.ViewModels.Tabs.Villages
             await _mediator.Publish(new VillageSettingUpdated(AccountId, VillageId));
 
             _dialogService.ShowMessageBox("資訊", "設定已匯入");
+=======
+            var saveSettingCommand = Locator.Current.GetService<SaveSettingCommand>();
+            await saveSettingCommand.Execute(AccountId, VillageId, VillageSettingInput, CancellationToken.None);
+>>>>>>> upstream/main
         }
 
         private async Task ExportHandler()
         {
             var path = _dialogService.SaveFileDialog();
             if (string.IsNullOrEmpty(path)) return;
-            var settings = new GetSetting().Get(VillageId);
+            var getSetting = Locator.Current.GetService<IGetSetting>();
+            var settings = getSetting.Get(VillageId);
             var jsonString = JsonSerializer.Serialize(settings);
             await File.WriteAllTextAsync(path, jsonString);
             _dialogService.ShowMessageBox("資訊", "設定已匯出");
@@ -102,7 +109,8 @@ namespace MainCore.UI.ViewModels.Tabs.Villages
 
         private static Dictionary<VillageSettingEnums, int> LoadSettingHandler(VillageId villageId)
         {
-            var settings = new GetSetting().Get(villageId);
+            var getSetting = Locator.Current.GetService<IGetSetting>();
+            var settings = getSetting.Get(villageId);
             return settings;
         }
     }

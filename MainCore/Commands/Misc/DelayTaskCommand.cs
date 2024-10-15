@@ -1,11 +1,24 @@
-﻿namespace MainCore.Commands.Misc
+﻿using MainCore.Commands.Abstract;
+
+namespace MainCore.Commands.Misc
 {
-    public class DelayTaskCommand
+    [RegisterScoped<DelayTaskCommand>]
+    public class DelayTaskCommand : CommandBase, ICommand
     {
-        public async Task Execute(AccountId accountId)
+        private readonly IGetSetting _getSetting;
+
+        public DelayTaskCommand(IDataService dataService, IGetSetting getSetting) : base(dataService)
         {
-            var delay = new GetSetting().ByName(accountId, AccountSettingEnums.TaskDelayMin, AccountSettingEnums.TaskDelayMax);
-            await Task.Delay(delay, CancellationToken.None);
+            _getSetting = getSetting;
+        }
+
+        public async Task<Result> Execute(CancellationToken cancellationToken)
+        {
+            var accountId = _dataService.AccountId;
+            var delay = _getSetting.ByName(accountId, AccountSettingEnums.TaskDelayMin, AccountSettingEnums.TaskDelayMax);
+
+            var result = await Result.Try(() => Task.Delay(delay, cancellationToken), static _ => Cancel.Error);
+            return result;
         }
     }
 }

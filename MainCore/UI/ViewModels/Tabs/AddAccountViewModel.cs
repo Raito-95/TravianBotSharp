@@ -1,41 +1,30 @@
 ﻿using FluentValidation;
+using MainCore.Commands.UI;
 using MainCore.UI.Models.Input;
 using MainCore.UI.ViewModels.Abstract;
-using MainCore.UI.ViewModels.UserControls;
 using ReactiveUI;
 using System.Reactive.Linq;
 
 namespace MainCore.UI.ViewModels.Tabs
 {
-    [RegisterSingleton(Registration = RegistrationStrategy.Self)]
+    [RegisterSingleton<AddAccountViewModel>]
     public class AddAccountViewModel : TabViewModelBase
     {
         public AccountInput AccountInput { get; } = new();
         public AccessInput AccessInput { get; } = new();
 
-        private readonly IMediator _mediator;
-
         private readonly IValidator<AccessInput> _accessInputValidator;
-        private readonly IValidator<AccountInput> _accountInputValidator;
-
-        private readonly WaitingOverlayViewModel _waitingOverlayViewModel;
         private readonly IDialogService _dialogService;
-        private readonly IDbContextFactory<AppDbContext> _contextFactory;
-        private readonly IUseragentManager _useragentManager;
+
         public ReactiveCommand<Unit, Unit> AddAccess { get; }
         public ReactiveCommand<Unit, Unit> EditAccess { get; }
         public ReactiveCommand<Unit, Unit> DeleteAccess { get; }
         public ReactiveCommand<Unit, Unit> AddAccount { get; }
 
-        public AddAccountViewModel(IMediator mediator, IValidator<AccessInput> accessInputValidator, IValidator<AccountInput> accountInputValidator, WaitingOverlayViewModel waitingOverlayViewModel, IDialogService dialogService, IDbContextFactory<AppDbContext> contextFactory, IUseragentManager useragentManager)
+        public AddAccountViewModel(IValidator<AccessInput> accessInputValidator, IDialogService dialogService)
         {
-            _mediator = mediator;
             _accessInputValidator = accessInputValidator;
-            _accountInputValidator = accountInputValidator;
-            _waitingOverlayViewModel = waitingOverlayViewModel;
             _dialogService = dialogService;
-            _contextFactory = contextFactory;
-            _useragentManager = useragentManager;
 
             AddAccess = ReactiveCommand.Create(AddAccessHandler);
             EditAccess = ReactiveCommand.Create(EditAccessHandler);
@@ -64,6 +53,7 @@ namespace MainCore.UI.ViewModels.Tabs
                 return;
             }
 
+<<<<<<< HEAD
             if (AccountInput.Accesses.Count == 0)
             {
                 AccountInput.Accesses.Add(AccessInput.Clone());
@@ -72,6 +62,9 @@ namespace MainCore.UI.ViewModels.Tabs
             {
                 _dialogService.ShowMessageBox("錯誤", "由於新規則，僅允許一次訪問。請查看TBS的Discord。");
             }
+=======
+            AccountInput.Accesses.Add(AccessInput.Clone());
+>>>>>>> upstream/main
         }
 
         private void EditAccessHandler()
@@ -94,6 +87,7 @@ namespace MainCore.UI.ViewModels.Tabs
 
         private async Task AddAccountHandler()
         {
+<<<<<<< HEAD
             var results = await _accountInputValidator.ValidateAsync(AccountInput);
 
             if (!results.IsValid)
@@ -132,6 +126,10 @@ namespace MainCore.UI.ViewModels.Tabs
             context.SaveChanges();
             context.FillAccountSettings(new(account.Id));
             return true;
+=======
+            var addAccountCommand = Locator.Current.GetService<AddAccountCommand>();
+            await addAccountCommand.Execute(AccountInput, default);
+>>>>>>> upstream/main
         }
 
         private AccessInput _selectedAccess;

@@ -1,26 +1,20 @@
-﻿using FluentValidation;
-using Humanizer;
-using MainCore.Commands.UI.Build;
-using MainCore.Common.Models;
+﻿using MainCore.Commands.UI.Villages;
 using MainCore.UI.Models.Input;
 using MainCore.UI.Models.Output;
 using MainCore.UI.ViewModels.Abstract;
 using MainCore.UI.ViewModels.UserControls;
 using ReactiveUI;
 using System.Reactive.Linq;
-using System.Text;
 using System.Text.Json;
 
 namespace MainCore.UI.ViewModels.Tabs.Villages
 {
-    [RegisterSingleton(Registration = RegistrationStrategy.Self)]
+    [RegisterSingleton<BuildViewModel>]
     public class BuildViewModel : VillageTabViewModelBase
     {
         private readonly IMediator _mediator;
-        private readonly IDbContextFactory<AppDbContext> _contextFactory;
         private readonly IDialogService _dialogService;
         private readonly ITaskManager _taskManager;
-        private readonly IValidator<ResourceBuildInput> _resourceBuildInputValidator;
 
         private ReactiveCommand<ListBoxItem, List<BuildingEnums>> LoadBuildNormal { get; }
 
@@ -49,13 +43,11 @@ namespace MainCore.UI.ViewModels.Tabs.Villages
         public ListBoxItemViewModel Queue { get; } = new();
         public ListBoxItemViewModel Jobs { get; } = new();
 
-        public BuildViewModel(IMediator mediator, IDbContextFactory<AppDbContext> contextFactory, IDialogService dialogService, ITaskManager taskManager, IValidator<ResourceBuildInput> resourceBuildInputValidator)
+        public BuildViewModel(IMediator mediator, IDialogService dialogService, ITaskManager taskManager)
         {
             _mediator = mediator;
-            _contextFactory = contextFactory;
             _dialogService = dialogService;
             _taskManager = taskManager;
-            _resourceBuildInputValidator = resourceBuildInputValidator;
 
             BuildNormal = ReactiveCommand.CreateFromTask(BuildNormalHandler);
             BuildResource = ReactiveCommand.CreateFromTask(ResourceNormalHandler);
@@ -80,9 +72,10 @@ namespace MainCore.UI.ViewModels.Tabs.Villages
                 .ObserveOn(RxApp.TaskpoolScheduler)
                 .InvokeCommand(LoadBuildNormal);
 
-            LoadBuilding.Subscribe(buildings => Buildings.Load(buildings));
-            LoadJob.Subscribe(jobs => Jobs.Load(jobs));
-            LoadQueue.Subscribe(queue => Queue.Load(queue));
+            LoadBuilding.Subscribe(Buildings.Load);
+            LoadJob.Subscribe(Jobs.Load);
+            LoadQueue.Subscribe(Queue.Load);
+
             LoadBuildNormal.Subscribe(buildings =>
             {
                 switch (buildings.Count)
@@ -127,51 +120,65 @@ namespace MainCore.UI.ViewModels.Tabs.Villages
             await LoadQueue.Execute(villageId);
         }
 
-        private List<ListBoxItem> LoadBuildingHandler(VillageId villageId)
+        private static List<ListBoxItem> LoadBuildingHandler(VillageId villageId)
         {
-            var buildings = GetBuildingItems(villageId);
-            return buildings;
+            var getBuildings = Locator.Current.GetService<GetBuildings>();
+            var items = getBuildings.LayoutItems(villageId);
+            return items;
         }
 
-        private List<ListBoxItem> LoadQueueHandler(VillageId villageId)
+        private static List<ListBoxItem> LoadQueueHandler(VillageId villageId)
         {
-            var queue = GetQueueItems(villageId);
-            return queue;
+            var getBuildings = Locator.Current.GetService<GetBuildings>();
+            var items = getBuildings.QueueItems(villageId);
+            return items;
         }
 
-        private List<ListBoxItem> LoadJobHandler(VillageId villageId)
+        private static List<ListBoxItem> LoadJobHandler(VillageId villageId)
         {
-            var jobs = GetJobItems(villageId);
+            var getJobs = Locator.Current.GetService<GetJobs>();
+            var jobs = getJobs.Items(villageId);
             return jobs;
         }
 
         private List<BuildingEnums> LoadBuildNormalHandler(ListBoxItem item)
         {
-            if (item is null) return new();
-            var buildings = GetNormalBuilding(VillageId, new BuildingId(item.Id));
+            if (item is null) return [];
+            var getBuildings = Locator.Current.GetService<GetBuildings>();
+            var buildings = getBuildings.NormalBuilds(VillageId, new BuildingId(item.Id));
             return buildings;
         }
 
         private async Task BuildNormalHandler()
         {
+            if (!IsAccountPaused(AccountId)) return;
+
+            var buildNormalCommand = Locator.Current.GetService<BuildNormalCommand>();
             var location = Buildings.SelectedIndex + 1;
-            await new BuildNormalCommand().Execute(AccountId, VillageId, NormalBuildInput, location);
+            await buildNormalCommand.Execute(AccountId, VillageId, NormalBuildInput, location);
         }
 
         private async Task UpgradeOneLevelHandler()
         {
+            if (!IsAccountPaused(AccountId)) return;
+
+            var upgradeLevel = Locator.Current.GetService<UpgradeLevel>();
             var location = Buildings.SelectedIndex + 1;
-            await UpgradeLevel(AccountId, VillageId, location, false);
+            await upgradeLevel.Execute(AccountId, VillageId, location, false);
         }
 
         private async Task UpgradeMaxLevelHandler()
         {
+            if (!IsAccountPaused(AccountId)) return;
+
+            var upgradeLevel = Locator.Current.GetService<UpgradeLevel>();
             var location = Buildings.SelectedIndex + 1;
-            await UpgradeLevel(AccountId, VillageId, location, true);
+            await upgradeLevel.Execute(AccountId, VillageId, location, true);
         }
 
         private async Task ResourceNormalHandler()
         {
+<<<<<<< HEAD
             var status = _taskManager.GetStatus(AccountId);
             if (status == StatusEnums.Online)
             {
@@ -184,54 +191,65 @@ namespace MainCore.UI.ViewModels.Tabs.Villages
                 _dialogService.ShowMessageBox("錯誤", result.ToString());
                 return;
             }
+=======
+            if (!IsAccountPaused(AccountId)) return;
+>>>>>>> upstream/main
 
-            var (type, level) = ResourceBuildInput.Get();
-            var plan = new ResourceBuildPlan()
-            {
-                Plan = type,
-                Level = level,
-            };
-            new AddJobCommand().ToBottom(VillageId, plan);
-            await _mediator.Publish(new JobUpdated(AccountId, VillageId));
+            var buildResourceCommand = Locator.Current.GetService<BuildResourceCommand>();
+            await buildResourceCommand.Execute(AccountId, VillageId, ResourceBuildInput);
         }
 
         private async Task UpHandler()
         {
-            await new MoveJobCommand().Execute(AccountId, VillageId, Jobs, MoveEnums.Up);
+            if (!IsAccountPaused(AccountId)) return;
+            var moveJobCommand = Locator.Current.GetService<MoveJobCommand>();
+            await moveJobCommand.Execute(AccountId, VillageId, Jobs, MoveEnums.Up);
         }
 
         private async Task DownHandler()
         {
-            await new MoveJobCommand().Execute(AccountId, VillageId, Jobs, MoveEnums.Down);
+            if (!IsAccountPaused(AccountId)) return;
+            var moveJobCommand = Locator.Current.GetService<MoveJobCommand>();
+            await moveJobCommand.Execute(AccountId, VillageId, Jobs, MoveEnums.Down);
         }
 
         private async Task TopHandler()
         {
-            await new MoveJobCommand().Execute(AccountId, VillageId, Jobs, MoveEnums.Top);
+            if (!IsAccountPaused(AccountId)) return;
+            var moveJobCommand = Locator.Current.GetService<MoveJobCommand>();
+            await moveJobCommand.Execute(AccountId, VillageId, Jobs, MoveEnums.Top);
         }
 
         private async Task BottomHandler()
         {
-            await new MoveJobCommand().Execute(AccountId, VillageId, Jobs, MoveEnums.Bottom);
+            if (!IsAccountPaused(AccountId)) return;
+            var moveJobCommand = Locator.Current.GetService<MoveJobCommand>();
+            await moveJobCommand.Execute(AccountId, VillageId, Jobs, MoveEnums.Bottom);
         }
 
         private async Task DeleteHandler()
         {
+<<<<<<< HEAD
             var status = _taskManager.GetStatus(AccountId);
             if (status == StatusEnums.Online)
             {
                 _dialogService.ShowMessageBox("警告", "請暫停帳號後再修改建築佇列");
                 return;
             }
+=======
+            if (!IsAccountPaused(AccountId)) return;
+>>>>>>> upstream/main
             if (!Jobs.IsSelected) return;
             var jobId = Jobs.SelectedItemId;
 
-            new DeleteJobCommand().ByJobId(new JobId(jobId));
+            var deleteJobCommand = Locator.Current.GetService<DeleteJobCommand>();
+            deleteJobCommand.ByJobId(new JobId(jobId));
             await _mediator.Publish(new JobUpdated(AccountId, VillageId));
         }
 
         private async Task DeleteAllHandler()
         {
+<<<<<<< HEAD
             var status = _taskManager.GetStatus(AccountId);
             if (status == StatusEnums.Online)
             {
@@ -247,25 +265,34 @@ namespace MainCore.UI.ViewModels.Tabs.Villages
                 .ExecuteDelete();
 #pragma warning restore S6966 // Awaitable method should be used
 
+=======
+            if (!IsAccountPaused(AccountId)) return;
+            var deleteJobCommand = Locator.Current.GetService<DeleteJobCommand>();
+            deleteJobCommand.ByVillageId(VillageId);
+>>>>>>> upstream/main
             await _mediator.Publish(new JobUpdated(AccountId, VillageId));
         }
 
         private async Task ImportHandler()
         {
-            await new ImportCommand().Execute(AccountId, VillageId);
+            if (!IsAccountPaused(AccountId)) return;
+            var importCommand = Locator.Current.GetService<ImportCommand>();
+            await importCommand.Execute(AccountId, VillageId);
         }
 
         private async Task ExportHandler()
         {
             var path = _dialogService.SaveFileDialog();
             if (string.IsNullOrEmpty(path)) return;
-            var jobs = GetJobs(VillageId);
+            var getJobs = Locator.Current.GetService<GetJobs>();
+            var jobs = getJobs.Dtos(VillageId);
             jobs.ForEach(job => job.Id = JobId.Empty);
             var jsonString = JsonSerializer.Serialize(jobs);
             await File.WriteAllTextAsync(path, jsonString);
             _dialogService.ShowMessageBox("資訊", "工作清單已匯出");
         }
 
+<<<<<<< HEAD
         private static List<ListBoxItem> GetBuildingItems(VillageId villageId)
         {
             var items = new GetBuildings().Execute(villageId).Select(x => ToListBoxItem(x)).ToList();
@@ -419,40 +446,22 @@ namespace MainCore.UI.ViewModels.Tabs.Villages
         }
 
         public async Task UpgradeLevel(AccountId accountId, VillageId villageId, int location, bool isMaxLevel)
+=======
+        private bool IsAccountPaused(AccountId accountId)
+>>>>>>> upstream/main
         {
             var status = _taskManager.GetStatus(accountId);
             if (status == StatusEnums.Online)
             {
+<<<<<<< HEAD
                 _dialogService.ShowMessageBox("警告", "請暫停帳號後再修改建築佇列");
                 return;
+=======
+                _dialogService.ShowMessageBox("Warning", "Please pause account before modifing building queue");
+                return false;
+>>>>>>> upstream/main
             }
-
-            var buildings = new GetBuildings().Execute(villageId);
-            var building = buildings.Find(x => x.Location == location);
-
-            if (building is null) return;
-            if (building.Type == BuildingEnums.Site) return;
-
-            var level = 0;
-
-            if (isMaxLevel)
-            {
-                level = building.Type.GetMaxLevel();
-            }
-            else
-            {
-                level = building.Level + 1;
-            }
-
-            var plan = new NormalBuildPlan()
-            {
-                Location = location,
-                Type = building.Type,
-                Level = level,
-            };
-
-            new AddJobCommand().ToBottom(villageId, plan);
-            await _mediator.Publish(new JobUpdated(accountId, villageId));
+            return true;
         }
         public static string GetNameInChinese(Enum enumValue)
         {

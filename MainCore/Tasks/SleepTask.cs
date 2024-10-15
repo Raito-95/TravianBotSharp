@@ -1,32 +1,35 @@
-﻿using MainCore.Tasks.Base;
+﻿using MainCore.Commands.Features;
+using MainCore.Tasks.Base;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace MainCore.Tasks
 {
-    [RegisterTransient(Registration = RegistrationStrategy.Self)]
+    [RegisterTransient<SleepTask>]
     public class SleepTask : AccountTask
     {
         private readonly ITaskManager _taskManager;
-        private readonly ILogService _logService;
+        private readonly GetAccess _getAccess;
+        private readonly IGetSetting _getSetting;
 
-        public SleepTask(ITaskManager taskManager, ILogService logService)
+        public SleepTask(ITaskManager taskManager, IGetSetting getSetting, GetAccess getAccess)
         {
             _taskManager = taskManager;
-            _logService = logService;
+            _getSetting = getSetting;
+            _getAccess = getAccess;
         }
 
-        protected override async Task<Result> Execute()
+        protected override async Task<Result> Execute(IServiceScope scoped, CancellationToken cancellationToken)
         {
-            await _chromeBrowser.Close();
-
             Result result;
-            result = await Sleep();
+            var sleepCommand = scoped.ServiceProvider.GetRequiredService<SleepCommand>();
+            result = await sleepCommand.Execute(cancellationToken);
             if (result.IsFailed) return result.WithError(TraceMessage.Error(TraceMessage.Line()));
 
-            var accessResult = new GetAccess().Execute(AccountId);
-            if (accessResult.IsFailed) return Result.Fail(accessResult.Errors).WithError(TraceMessage.Error(TraceMessage.Line()));
-            var access = accessResult.Value;
+            var (_, isFailed, access, errors) = await _getAccess.Execute(AccountId);
+            if (isFailed) return Result.Fail(errors).WithError(TraceMessage.Error(TraceMessage.Line()));
 
-            result = await new OpenBrowserCommand().Execute(_chromeBrowser, AccountId, access, CancellationToken);
+            var openBrowserCommand = scoped.ServiceProvider.GetRequiredService<OpenBrowserCommand>();
+            result = await openBrowserCommand.Execute(AccountId, access, cancellationToken);
             if (result.IsFailed) return result.WithError(TraceMessage.Error(TraceMessage.Line()));
 
             await SetNextExecute();
@@ -36,36 +39,11 @@ namespace MainCore.Tasks
 
         private async Task SetNextExecute()
         {
-            var workTime = new GetSetting().ByName(AccountId, AccountSettingEnums.WorkTimeMin, AccountSettingEnums.WorkTimeMax);
+            var workTime = _getSetting.ByName(AccountId, AccountSettingEnums.WorkTimeMin, AccountSettingEnums.WorkTimeMax);
             ExecuteAt = DateTime.Now.AddMinutes(workTime);
             await _taskManager.ReOrder(AccountId);
         }
 
-        protected override void SetName()
-        {
-            _name = "Sleep task";
-        }
-
-        private async Task<Result> Sleep()
-        {
-            var logger = _logService.GetLogger(AccountId);
-
-            var sleepTimeMinutes = new GetSetting().ByName(AccountId, AccountSettingEnums.SleepTimeMin, AccountSettingEnums.SleepTimeMax);
-            var sleepEnd = DateTime.Now.AddMinutes(sleepTimeMinutes);
-            int lastMinute = 0;
-            while (true)
-            {
-                if (CancellationToken.IsCancellationRequested) return Cancel.Error;
-                var timeRemaining = sleepEnd - DateTime.Now;
-                if (timeRemaining < TimeSpan.Zero) return Result.Ok();
-                await Task.Delay(TimeSpan.FromSeconds(1), CancellationToken.None);
-                var currentMinute = (int)timeRemaining.TotalMinutes;
-                if (lastMinute != currentMinute)
-                {
-                    logger.Information("Chrome will reopen in {CurrentMinute} mins", currentMinute);
-                    lastMinute = currentMinute;
-                }
-            }
-        }
+        protected override string TaskName => "Sleep";
     }
 }

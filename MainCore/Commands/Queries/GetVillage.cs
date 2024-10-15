@@ -1,9 +1,11 @@
-﻿namespace MainCore.Commands.Queries
-{
-    public class GetVillage(IDbContextFactory<AppDbContext> contextFactory = null)
-    {
-        private readonly IDbContextFactory<AppDbContext> _contextFactory = contextFactory ?? Locator.Current.GetService<IDbContextFactory<AppDbContext>>();
+﻿using MainCore.Commands.Abstract;
+using MainCore.UI.Models.Output;
 
+namespace MainCore.Commands.Queries
+{
+    [RegisterSingleton<GetVillage>]
+    public class GetVillage(IDbContextFactory<AppDbContext> contextFactory) : QueryBase(contextFactory)
+    {
         public List<VillageId> All(AccountId accountId)
         {
             using var context = _contextFactory.CreateDbContext();
@@ -66,6 +68,22 @@
                 .Select(x => new VillageId(x))
                 .ToList();
             return hasBuildingJobVillages;
+        }
+
+        public List<ListBoxItem> Info(AccountId accountId)
+        {
+            using var context = _contextFactory.CreateDbContext();
+
+            var villages = context.Villages
+                .Where(x => x.AccountId == accountId.Value)
+                .OrderBy(x => x.Name)
+                .Select(x => new ListBoxItem()
+                {
+                    Id = x.Id,
+                    Content = $"{x.Name}{Environment.NewLine}({x.X}|{x.Y})",
+                })
+                .ToList();
+            return villages;
         }
     }
 }

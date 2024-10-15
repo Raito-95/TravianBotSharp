@@ -1,4 +1,5 @@
-﻿using MainCore.UI.Enums;
+﻿using MainCore.Commands.UI;
+using MainCore.UI.Enums;
 using MainCore.UI.Models.Output;
 using MainCore.UI.Stores;
 using MainCore.UI.ViewModels.Abstract;
@@ -9,31 +10,20 @@ using System.Reflection;
 
 namespace MainCore.UI.ViewModels.UserControls
 {
-    [RegisterSingleton(Registration = RegistrationStrategy.Self)]
+    [RegisterSingleton<MainLayoutViewModel>]
     public class MainLayoutViewModel : ViewModelBase
     {
-        private readonly IMediator _mediator;
         private readonly ITaskManager _taskManager;
         private readonly IDialogService _dialogService;
-        private readonly IDbContextFactory<AppDbContext> _contextFactory;
-        private readonly ILogService _logService;
-        private readonly ITimerManager _timerManager;
-        private readonly IChromeManager _chromeManager;
 
         private readonly AccountTabStore _accountTabStore;
         public ListBoxItemViewModel Accounts { get; } = new();
         public AccountTabStore AccountTabStore => _accountTabStore;
 
-        public MainLayoutViewModel(AccountTabStore accountTabStore, SelectedItemStore selectedItemStore, IMediator mediator, ITaskManager taskManager, IDbContextFactory<AppDbContext> contextFactory, ILogService logService, ITimerManager timerManager, IChromeManager chromeManager, IDialogService dialogService)
+        public MainLayoutViewModel(AccountTabStore accountTabStore, SelectedItemStore selectedItemStore, ITaskManager taskManager, IDialogService dialogService)
         {
             _accountTabStore = accountTabStore;
-            _mediator = mediator;
             _taskManager = taskManager;
-
-            _contextFactory = contextFactory;
-            _logService = logService;
-            _timerManager = timerManager;
-            _chromeManager = chromeManager;
             _dialogService = dialogService;
 
             var isEnable = this.WhenAnyValue(x => x.Accounts.IsEnable);
@@ -62,18 +52,16 @@ namespace MainCore.UI.ViewModels.UserControls
             });
 
             accountObservable
-                .Select(x =>
-                {
-                    if (x is null) return AccountId.Empty;
-                    return new AccountId(x.Id);
-                })
+                .WhereNotNull()
+                .Select(x => new AccountId(x.Id))
+                .ObserveOn(RxApp.TaskpoolScheduler)
                 .InvokeCommand(GetStatus);
 
             LoadVersion
                 .Do(version => Log.Information("===============> Current version: {Version} <===============", version))
                 .ToProperty(this, x => x.Version, out _version);
 
-            LoadAccount.Subscribe(accounts => Accounts.Load(accounts));
+            LoadAccount.Subscribe(Accounts.Load);
 
             GetStatus.Subscribe(SetPauseText);
 
@@ -112,8 +100,8 @@ namespace MainCore.UI.ViewModels.UserControls
                 _dialogService.ShowMessageBox("警告", "未選擇帳號");
                 return;
             }
-            var accountId = new AccountId(Accounts.SelectedItemId);
 
+<<<<<<< HEAD
             var status = _taskManager.GetStatus(accountId);
             if (status != StatusEnums.Offline)
             {
@@ -121,11 +109,14 @@ namespace MainCore.UI.ViewModels.UserControls
                 return;
             }
             var result = _dialogService.ShowConfirmBox("資訊", $"確定要刪除 \n {Accounts.SelectedItem.Content} 嗎？");
+=======
+            var result = _dialogService.ShowConfirmBox("Information", $"Are you sure want to delete \n {Accounts.SelectedItem.Content}");
+>>>>>>> upstream/main
             if (!result) return;
 
-            DeleteAccountFromDatabase(accountId);
-
-            await _mediator.Publish(new AccountUpdated());
+            var accountId = new AccountId(Accounts.SelectedItemId);
+            var deleteAccountCommand = Locator.Current.GetService<DeleteAccountCommand>();
+            await deleteAccountCommand.Execute(accountId, CancellationToken.None);
         }
 
         private async Task LoginHandler()
@@ -135,7 +126,9 @@ namespace MainCore.UI.ViewModels.UserControls
                 _dialogService.ShowMessageBox("警告", "未選擇帳號");
                 return;
             }
+
             var accountId = new AccountId(Accounts.SelectedItemId);
+<<<<<<< HEAD
 
             var tribe = (TribeEnums)new GetSetting().ByName(accountId, AccountSettingEnums.Tribe);
             if (tribe == TribeEnums.Any)
@@ -183,6 +176,10 @@ namespace MainCore.UI.ViewModels.UserControls
 
             _timerManager.Start(accountId);
             await _taskManager.SetStatus(accountId, StatusEnums.Online);
+=======
+            var loginCommand = Locator.Current.GetService<LoginCommand>();
+            await loginCommand.Execute(accountId, CancellationToken.None);
+>>>>>>> upstream/main
         }
 
         private async Task LogoutTask()
@@ -194,6 +191,7 @@ namespace MainCore.UI.ViewModels.UserControls
             }
 
             var accountId = new AccountId(Accounts.SelectedItemId);
+<<<<<<< HEAD
             var status = _taskManager.GetStatus(accountId);
             switch (status)
             {
@@ -222,12 +220,18 @@ namespace MainCore.UI.ViewModels.UserControls
             await chromeBrowser.Close();
 
             await _taskManager.SetStatus(accountId, StatusEnums.Offline);
+=======
+
+            var logoutCommand = Locator.Current.GetService<LogoutCommand>();
+            await logoutCommand.Execute(accountId, CancellationToken.None);
+>>>>>>> upstream/main
         }
 
-        private async Task<StatusEnums> PauseTask()
+        private async Task PauseTask()
         {
             if (!Accounts.IsSelected)
             {
+<<<<<<< HEAD
                 _dialogService.ShowMessageBox("警告", "未選擇帳號");
                 return StatusEnums.Offline;
             }
@@ -249,6 +253,15 @@ namespace MainCore.UI.ViewModels.UserControls
 
             _dialogService.ShowMessageBox("資訊", $"帳號當前狀態為 {status}");
             return status;
+=======
+                _dialogService.ShowMessageBox("Warning", "No account selected");
+                return;
+            }
+
+            var accountId = new AccountId(Accounts.SelectedItemId);
+            var pauseCommand = Locator.Current.GetService<PauseCommand>();
+            await pauseCommand.Execute(accountId, CancellationToken.None);
+>>>>>>> upstream/main
         }
 
         private async Task RestartTask()
@@ -258,7 +271,9 @@ namespace MainCore.UI.ViewModels.UserControls
                 _dialogService.ShowMessageBox("警告", "未選擇帳號");
                 return;
             }
+
             var accountId = new AccountId(Accounts.SelectedItemId);
+<<<<<<< HEAD
             var status = _taskManager.GetStatus(accountId);
 
             switch (status)
@@ -281,6 +296,10 @@ namespace MainCore.UI.ViewModels.UserControls
                     await _taskManager.SetStatus(accountId, StatusEnums.Online);
                     return;
             }
+=======
+            var restartCommand = Locator.Current.GetService<RestartCommand>();
+            await restartCommand.Execute(accountId, CancellationToken.None);
+>>>>>>> upstream/main
         }
 
         public async Task LoadStatus(AccountId accountId, StatusEnums status)
@@ -296,9 +315,10 @@ namespace MainCore.UI.ViewModels.UserControls
             return _taskManager.GetStatus(accountId);
         }
 
-        private List<ListBoxItem> LoadAccountHandler()
+        private static List<ListBoxItem> LoadAccountHandler()
         {
-            var items = GetAccountItems();
+            var getAccount = Locator.Current.GetService<GetAccount>();
+            var items = getAccount.Items();
             return items;
         }
 
@@ -339,36 +359,6 @@ namespace MainCore.UI.ViewModels.UserControls
             }
         }
 
-        private void DeleteAccountFromDatabase(AccountId accountId)
-        {
-            using var context = _contextFactory.CreateDbContext();
-            context.Accounts
-                .Where(x => x.Id == accountId.Value)
-                .ExecuteDelete();
-        }
-
-        private List<ListBoxItem> GetAccountItems()
-        {
-            using var context = _contextFactory.CreateDbContext();
-
-            var accounts = context.Accounts
-                .AsEnumerable()
-                .Select(x =>
-                {
-                    var serverUrl = new Uri(x.Server);
-                    var status = _taskManager.GetStatus(new(x.Id));
-                    return new ListBoxItem()
-                    {
-                        Id = x.Id,
-                        Color = status.GetColor(),
-                        Content = $"{x.Username}{Environment.NewLine}({serverUrl.Host})"
-                    };
-                })
-                .ToList();
-
-            return accounts;
-        }
-
         private readonly ObservableAsPropertyHelper<string> _version;
         public string Version => _version.Value;
 
@@ -385,7 +375,7 @@ namespace MainCore.UI.ViewModels.UserControls
         public ReactiveCommand<Unit, Unit> DeleteAccount { get; }
         public ReactiveCommand<Unit, Unit> Login { get; }
         public ReactiveCommand<Unit, Unit> Logout { get; }
-        public ReactiveCommand<Unit, StatusEnums> Pause { get; }
+        public ReactiveCommand<Unit, Unit> Pause { get; }
         public ReactiveCommand<Unit, Unit> Restart { get; }
         public ReactiveCommand<Unit, string> LoadVersion { get; }
         public ReactiveCommand<Unit, List<ListBoxItem>> LoadAccount { get; }

@@ -1,11 +1,14 @@
-﻿using System.Web;
+﻿using MainCore.Commands.Abstract;
+using System.Web;
 
 namespace MainCore.Commands.Navigate
 {
-    public class ToBuildingCommand
+    [RegisterScoped<ToBuildingCommand>]
+    public class ToBuildingCommand(IDataService dataService) : CommandBase(dataService), ICommand<int>
     {
-        public async Task<Result> Execute(IChromeBrowser chromeBrowser, int location, CancellationToken cancellationToken)
+        public async Task<Result> Execute(int location, CancellationToken cancellationToken)
         {
+            var chromeBrowser = _dataService.ChromeBrowser;
             var html = chromeBrowser.Html;
             var node = GetBuilding(html, location);
             if (node is null) return Retry.NotFound($"{location}", "nodeBuilding");

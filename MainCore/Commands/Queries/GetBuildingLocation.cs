@@ -1,9 +1,10 @@
-﻿namespace MainCore.Commands.Queries
-{
-    public class GetBuildingLocation(IDbContextFactory<AppDbContext> contextFactory = null)
-    {
-        private readonly IDbContextFactory<AppDbContext> _contextFactory = contextFactory ?? Locator.Current.GetService<IDbContextFactory<AppDbContext>>();
+﻿using MainCore.Commands.Abstract;
 
+namespace MainCore.Commands.Queries
+{
+    [RegisterSingleton<GetBuildingLocation>]
+    public class GetBuildingLocation(IDbContextFactory<AppDbContext> contextFactory) : QueryBase(contextFactory)
+    {
         public int Execute(VillageId villageId, BuildingEnums building)
         {
             using var context = _contextFactory.CreateDbContext();
