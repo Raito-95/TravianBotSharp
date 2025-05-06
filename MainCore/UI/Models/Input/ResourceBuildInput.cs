@@ -21,9 +21,9 @@ namespace MainCore.UI.Models.Input
 
         public ObservableCollection<ComboBoxItem<ResourcePlanEnums>> Plans { get; set; } = new()
         {
-            new ComboBoxItem<ResourcePlanEnums>(ResourcePlanEnums.AllResources, ResourcePlanEnums.AllResources.Humanize()),
-            new ComboBoxItem<ResourcePlanEnums>(ResourcePlanEnums.OnlyCrop, ResourcePlanEnums.OnlyCrop.Humanize()),
-            new ComboBoxItem<ResourcePlanEnums>(ResourcePlanEnums.ExcludeCrop, ResourcePlanEnums.ExcludeCrop.Humanize()),
+            new ComboBoxItem<ResourcePlanEnums>(ResourcePlanEnums.AllResources, "所有資源田"),
+            new ComboBoxItem<ResourcePlanEnums>(ResourcePlanEnums.OnlyCrop, "僅限農場"),
+            new ComboBoxItem<ResourcePlanEnums>(ResourcePlanEnums.ExcludeCrop, "不含農場"),
         };
 
         private ComboBoxItem<ResourcePlanEnums> _selectedPlan;

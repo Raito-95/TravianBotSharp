@@ -33,9 +33,9 @@ namespace MainCore.UI.ViewModels.Tabs
 
         private static readonly Dictionary<Color, string> _activeTexts = new()
         {
-            { Color.Green , "Deactive" },
-            { Color.Red , "Active" },
-            { Color.Black , "No farmlist selected" },
+            { Color.Green , "未啟用" },
+            { Color.Red , "啟用中" },
+            { Color.Black , "尚未選擇羊單" },
         };
 
         public FarmingViewModel(IMediator mediator, IDialogService dialogService, ITaskManager taskManager, IDbContextFactory<AppDbContext> contextFactory)
@@ -169,7 +169,7 @@ namespace MainCore.UI.ViewModels.Tabs
             return items;
         }
 
-        private string _activeText = "No farmlist selected";
+        private string _activeText = "尚未選擇羊單";
 
         public string ActiveText
         {

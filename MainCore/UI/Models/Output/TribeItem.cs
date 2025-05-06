@@ -21,17 +21,14 @@ namespace MainCore.UI.Models.Output
         public TribeItem(TribeEnums tribe)
         {
             Tribe = tribe;
-        }
-
-        public static string GetImageSource(TribeEnums tribe)
-        {
-            const string url = "pack://application:,,,/Resources/";
-            return $"{url}{TribeImage[tribe]}";
+            Name = ((TribeEnumsZhTw)(int)tribe).ToString();
         }
 
         public TribeEnums Tribe { get; }
+        public string Name { get; }
 
-        public string ImageSource => GetImageSource(Tribe);
+        public string ImageSource => $"pack://application:,,,/Resources/{TribeImage[Tribe]}";
+
         public static Rectangle ImageMask => new(0, 0, 61, 61);
     }
 }

@@ -123,7 +123,7 @@ namespace MainCore.Commands.Queries
                 .Select(x => new ListBoxItem()
                 {
                     Id = x.Id,
-                    Content = $"{x.Type.Humanize()} to level {x.Level} complete at {x.CompleteTime}",
+                    Content = $"{(BuildingEnumsZhTw)(int)x.Type} 將升至等級 {x.Level}，預計完成於 {x.CompleteTime}",
                 })
                 .ToList();
 
@@ -205,7 +205,7 @@ namespace MainCore.Commands.Queries
             var item = new ListBoxItem()
             {
                 Id = building.Id.Value,
-                Content = $"[{building.Location}] {building.Type.Humanize()} | lvl {sb}",
+                Content = $"[{building.Location}] {(BuildingEnumsZhTw)(int)building.Type} | 等級 {sb}",
                 Color = building.Type.GetColor(),
             };
             return item;

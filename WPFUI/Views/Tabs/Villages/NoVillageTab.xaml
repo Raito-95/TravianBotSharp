@@ -9,6 +9,8 @@
     mc:Ignorable="d"
     d:DesignHeight="450" d:DesignWidth="800">
     <Grid Background="#FFE5E5E5">
-        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="No village, login to let bot update village list" VerticalAlignment="Center" TextAlignment="Center" LineHeight="11" />
+        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap"
+                   Text="尚無村莊，請登入以讓 Bot 更新村莊列表"
+                   VerticalAlignment="Center" TextAlignment="Center" LineHeight="11" />
     </Grid>
 </v:NoVillageTabBase>

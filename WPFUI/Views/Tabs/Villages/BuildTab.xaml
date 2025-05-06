@@ -29,12 +29,12 @@
                 <ListBox x:Name="BuildingsGrid" SelectionMode="Single" ItemTemplate="{DynamicResource ListBoxBlackColorItem}">
                     <ListBox.ContextMenu>
                         <ContextMenu>
-                            <MenuItem x:Name="UpgradeOneLevelButton" Header="Upgrade one level">
+                            <MenuItem x:Name="UpgradeOneLevelButton" Header="升級一個等級">
                                 <MenuItem.Icon>
                                     <materialDesign:PackIcon Width="{DynamicResource IconSize}" Height="{DynamicResource IconSize}" Kind="Hammer" />
                                 </MenuItem.Icon>
                             </MenuItem>
-                            <MenuItem x:Name="UpgradeMaxLevelButton" Header="Upgrade max level">
+                            <MenuItem x:Name="UpgradeMaxLevelButton" Header="升級至最高等級">
                                 <MenuItem.Icon>
                                     <materialDesign:PackIcon Width="{DynamicResource IconSize}" Height="{DynamicResource IconSize}" Kind="Hammer" />
                                 </MenuItem.Icon>
@@ -63,12 +63,12 @@
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <Label Grid.Row="0" Grid.Column="0" Content="Building" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                    <Label Grid.Row="0" Grid.Column="0" Content="建築物" VerticalAlignment="Center" HorizontalAlignment="Center" />
                     <ComboBox x:Name="NormalBuildings" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center"  HorizontalAlignment="Stretch" DisplayMemberPath="Name" />
 
-                    <Label Grid.Row="1" Grid.Column="0" Content="Level"  VerticalAlignment="Center" HorizontalAlignment="Center" />
+                    <Label Grid.Row="1" Grid.Column="0" Content="等級"  VerticalAlignment="Center" HorizontalAlignment="Center" />
                     <TextBox x:Name="NormalLevel" Grid.Row="1"  Grid.Column="1" />
-                    <Button x:Name="NormalBuild" Grid.Row="3" Grid.ColumnSpan="2" Style="{DynamicResource MaterialDesignFloatingActionMiniDarkButton}" ToolTip="Build">
+                    <Button x:Name="NormalBuild" Grid.Row="3" Grid.ColumnSpan="2" Style="{DynamicResource MaterialDesignFloatingActionMiniDarkButton}" ToolTip="建造">
                         <materialDesign:PackIcon Width="30" Height="30" Kind="Hammer" />
                     </Button>
                 </Grid>
@@ -88,9 +88,9 @@
                     </Grid.ColumnDefinitions>
                     <ComboBox x:Name="ResType" Grid.Row="0" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Stretch" DisplayMemberPath="Name" SelectedIndex="0" />
 
-                    <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Content="Level" />
+                    <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Content="等級" />
                     <TextBox x:Name="ResourceLevel" Grid.Row="1"  Grid.Column="1" />
-                    <Button x:Name="ResourceBuild" Grid.Row="3" Grid.ColumnSpan="2" Style="{DynamicResource MaterialDesignFloatingActionMiniDarkButton}" ToolTip="Build">
+                    <Button x:Name="ResourceBuild" Grid.Row="3" Grid.ColumnSpan="2" Style="{DynamicResource MaterialDesignFloatingActionMiniDarkButton}" ToolTip="建造">
                         <materialDesign:PackIcon Width="30" Height="30" Kind="Hammer" />
                     </Button>
                 </Grid>
@@ -107,39 +107,39 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <Button x:Name="ImportButton"       Grid.Column="0" Content="Import" Margin="5" />
-                <Button x:Name="ExportButton"       Grid.Column="1" Content="Export" Margin="5" />
+                <Button x:Name="ImportButton"       Grid.Column="0" Content="匯入" Margin="5" />
+                <Button x:Name="ExportButton"       Grid.Column="1" Content="匯出" Margin="5" />
             </Grid>
             <Border Grid.Row="1" Style="{DynamicResource Box}">
                 <ListBox x:Name="JobsGrid" SelectionMode="Single" ItemTemplate="{DynamicResource ListBoxColorItem}">
                     <ListBox.ContextMenu>
                         <ContextMenu>
-                            <MenuItem x:Name="TopButton" Header="Top">
+                            <MenuItem x:Name="TopButton" Header="移至最上層">
                                 <MenuItem.Icon>
                                     <materialDesign:PackIcon Width="{DynamicResource IconSize}" Height="{DynamicResource IconSize}" Kind="ArrowUpBold" />
                                 </MenuItem.Icon>
                             </MenuItem>
-                            <MenuItem x:Name="UpButton" Header="Up">
+                            <MenuItem x:Name="UpButton" Header="上移">
                                 <MenuItem.Icon>
                                     <materialDesign:PackIcon Width="{DynamicResource IconSize}" Height="{DynamicResource IconSize}" Kind="ArrowUp" />
                                 </MenuItem.Icon>
                             </MenuItem>
-                            <MenuItem x:Name="DownButton" Header="Down">
+                            <MenuItem x:Name="DownButton" Header="下移">
                                 <MenuItem.Icon>
                                     <materialDesign:PackIcon Width="{DynamicResource IconSize}" Height="{DynamicResource IconSize}" Kind="ArrowDown" />
                                 </MenuItem.Icon>
                             </MenuItem>
-                            <MenuItem x:Name="BottomButton" Header="Bottom">
+                            <MenuItem x:Name="BottomButton" Header="移至最下層">
                                 <MenuItem.Icon>
                                     <materialDesign:PackIcon Width="{DynamicResource IconSize}" Height="{DynamicResource IconSize}" Kind="ArrowDownBold" />
                                 </MenuItem.Icon>
                             </MenuItem>
-                            <MenuItem x:Name="DeleteButton" Header="Delete">
+                            <MenuItem x:Name="DeleteButton" Header="刪除">
                                 <MenuItem.Icon>
                                     <materialDesign:PackIcon Width="{DynamicResource IconSize}" Height="{DynamicResource IconSize}" Kind="Delete" />
                                 </MenuItem.Icon>
                             </MenuItem>
-                            <MenuItem x:Name="DeleteAllButton" Header="Delete all">
+                            <MenuItem x:Name="DeleteAllButton" Header="全部刪除">
                                 <MenuItem.Icon>
                                     <materialDesign:PackIcon Width="{DynamicResource IconSize}" Height="{DynamicResource IconSize}" Kind="DeleteForever" />
                                 </MenuItem.Icon>

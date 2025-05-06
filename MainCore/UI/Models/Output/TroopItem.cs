@@ -34,6 +34,7 @@ namespace MainCore.UI.Models.Output
         public TroopItem(TroopEnums troop)
         {
             Troop = troop;
+            Name = ((TroopEnumsZhTw)(int)troop).ToString();
         }
 
         public static string GetImageSource(TroopEnums troop)
@@ -50,6 +51,7 @@ namespace MainCore.UI.Models.Output
         }
 
         public TroopEnums Troop { get; }
+        public string Name { get; }
 
         public string ImageSource => GetImageSource(Troop);
         public Rectangle ImageMask => GetImageMask(Troop);

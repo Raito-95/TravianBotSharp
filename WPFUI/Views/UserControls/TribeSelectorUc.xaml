@@ -12,16 +12,17 @@
     x:Name="root">
     <StackPanel VerticalAlignment="Bottom">
         <StackPanel Orientation="Horizontal">
-            <Label Content="{Binding Text, ElementName=root}" Width="NaN" />
+            <Label Content="{Binding Text, ElementName=root}" Width="Auto" VerticalAlignment="Center" />
             <ComboBox x:Name="TribeComboBox">
+                <ComboBox.Resources>
+                    <converter:TribeItemToCroppedBitmap x:Key="TribeItemConverter" />
+                </ComboBox.Resources>
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
-                        <DataTemplate.Resources>
-                            <converter:TribeItemToCroppedBitmap x:Key="TribeItemConverter" />
-                        </DataTemplate.Resources>
                         <StackPanel Orientation="Horizontal">
-                            <Image Source="{Binding Path=., Converter={StaticResource TribeItemConverter}}" Width="16" Height="16" />
-                            <TextBlock Text="{Binding Tribe}" Margin="5,0,0,0" />
+                            <Image Width="16" Height="16"
+                                   Source="{Binding Path=., Converter={StaticResource TribeItemConverter}}" />
+                            <TextBlock Text="{Binding Name}" Margin="5,0,0,0" VerticalAlignment="Center" />
                         </StackPanel>
                     </DataTemplate>
                 </ComboBox.ItemTemplate>

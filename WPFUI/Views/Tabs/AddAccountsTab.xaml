@@ -16,7 +16,9 @@
         </Grid.RowDefinitions>
 
         <Border Style="{DynamicResource Box}">
-            <TextBox IsReadOnly="True" Text="Format: https://serverl.url username password [proxy_host] [proxy_port] [proxy_username] [proxy_password]" Margin="5,0,5,0" />
+            <TextBox IsReadOnly="True" 
+                     Text="格式： https://serverl.url 使用者名稱 密碼 [proxy_host] [proxy_port] [proxy_username] [proxy_password]" 
+                     Margin="5,0,5,0" />
         </Border>
         <Border Style="{DynamicResource Box}" Grid.Row="1">
             <TextBox x:Name="AccountsInput" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" Margin="5,0,5,0" />
@@ -24,16 +26,16 @@
         <Border Style="{DynamicResource Box}" Grid.Row="2">
             <DataGrid x:Name="AccountsView" IsReadOnly="True" SelectionMode="Single" SelectionUnit="FullRow" AutoGenerateColumns="False">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Server" Binding="{Binding Server}" />
-                    <DataGridTextColumn Header="Username" Binding="{Binding Username}" />
-                    <DataGridTextColumn Header="Password" Binding="{Binding Password}" />
-                    <DataGridTextColumn Header="Proxy's host" Binding="{Binding ProxyHost}" />
-                    <DataGridTextColumn Header="Proxy's port" Binding="{Binding ProxyPort}" />
-                    <DataGridTextColumn Header="Proxy's username" Binding="{Binding ProxyUsername}" />
-                    <DataGridTextColumn Header="Proxy's password" Binding="{Binding ProxyPassword}" />
+                    <DataGridTextColumn Header="伺服器" Binding="{Binding Server}" />
+                    <DataGridTextColumn Header="使用者名稱" Binding="{Binding Username}" />
+                    <DataGridTextColumn Header="密碼" Binding="{Binding Password}" />
+                    <DataGridTextColumn Header="Proxy 主機" Binding="{Binding ProxyHost}" />
+                    <DataGridTextColumn Header="Proxy 埠號" Binding="{Binding ProxyPort}" />
+                    <DataGridTextColumn Header="Proxy 使用者名稱" Binding="{Binding ProxyUsername}" />
+                    <DataGridTextColumn Header="Proxy 密碼" Binding="{Binding ProxyPassword}" />
                 </DataGrid.Columns>
             </DataGrid>
         </Border>
-        <Button x:Name="AddButton" Content="Add accounts" Grid.Row="3" Margin="10" />
+        <Button x:Name="AddButton" Content="新增帳號" Grid.Row="3" Margin="10" />
     </Grid>
 </v:AddAccountsTabBase>
