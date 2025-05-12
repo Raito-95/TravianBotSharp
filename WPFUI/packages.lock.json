@@ -12,6 +12,12 @@
           "Microsoft.Xaml.Behaviors.Wpf": "1.1.39"
         }
       },
+      "Microsoft.NET.ILLink.Tasks": {
+        "type": "Direct",
+        "requested": "[8.0.11, )",
+        "resolved": "8.0.11",
+        "contentHash": "zk5lnZrYJgtuJG8L4v17Ej8rZ3PUcR2iweNV08BaO5LbYHIi2wNaVNcJoLxvqgQdnjLlKnCCfVGLDr6QHeAarQ=="
+      },
       "ReactiveUI.WPF": {
         "type": "Direct",
         "requested": "[20.1.1, )",

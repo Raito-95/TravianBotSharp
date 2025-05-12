@@ -6,7 +6,7 @@
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     <SelfContained>true</SelfContained>
 	
-    <AssemblyVersion>1975.4.30</AssemblyVersion>
+    <AssemblyVersion>2.12.16</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>

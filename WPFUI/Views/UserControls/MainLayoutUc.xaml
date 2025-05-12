@@ -46,7 +46,7 @@
             <Border Style="{DynamicResource Box}" Grid.Row="2">
                 <StackPanel Orientation="Horizontal">
                     <Label Content="版本：" />
-                    <Label x:Name="Version" Content="30.4.1975" />
+                    <Label x:Name="Version" Content="16.12.2" />
                 </StackPanel>
             </Border>
         </Grid>
